@@ -1,1 +1,1 @@
-szachownica = {"a1": " ", "b1": " ", "c1": " "}
+szachownica = {"a1": " ", ghhg"b1": " ", "c1": " "}
