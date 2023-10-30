@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96bd3ddc-7060-4d49-ae6e-045ee25f4538" name="Changes" comment="Initial commit">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-    </list>
+    <list default="true" id="96bd3ddc-7060-4d49-ae6e-045ee25f4538" name="Changes" comment="Initial commit" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -38,6 +36,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "C:/jakub.szczepanski/Semestr III/Metodyki Zwinne/Projekt",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -56,6 +55,7 @@
       <updated>1698670001400</updated>
       <workItem from="1698670005922" duration="384000" />
       <workItem from="1698670405873" duration="116000" />
+      <workItem from="1698670532111" duration="140000" />
     </task>
     <task id="LOCAL-00001" summary="kk">
       <option name="closed" value="true" />
@@ -73,7 +73,15 @@
       <option name="project" value="LOCAL" />
       <updated>1698670179452</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Initial commit">
+      <option name="closed" value="true" />
+      <created>1698670657733</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1698670657733</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
