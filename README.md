@@ -7,6 +7,7 @@
 
 
 ## Sprint I
+ Zaimplementowanie szachownicy oraz figur. 
 
 
 ## Sprint II
