@@ -7,9 +7,12 @@
 
 
 ## Sprint I
-
+* Zaimplementowanie szachownicy oraz figur. 
+* Dodanie logiki części figur.
 
 ## Sprint II
+* Dodanie logiki pozostałych figur. Dodanie  
+* Dodanie możliwości logowania.
 
 
 ## Sprint III
