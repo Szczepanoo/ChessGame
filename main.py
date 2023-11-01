@@ -32,10 +32,10 @@ valid_moves = []
 sciezka = os.getcwd() + '//images'
 white_enpassant_x1 = -1
 white_enpassant_x2 = -1
-white_enpassant_y = -1
+allow_white_enpassant = False
 black_enpassant_x1 = -1
 black_enpassant_x2 = -1
-black_enpassant_y = -1
+allow_black_enpassant = False
 # load in game piece images (queen, king, rook, bishop, knight, pawn) x 2
 black_queen = pygame.image.load(sciezka + '/black queen.png')
 black_queen = pygame.transform.scale(black_queen, (80, 80))
@@ -264,11 +264,11 @@ w tej metodcie trzeba dodać en passant
 def check_pawn(position, color):
     moves_list = []
     if color == 'white':
-        if black_enpassant_y == 4:
+        if allow_black_enpassant:
             if position[0] == black_enpassant_x1 and position[1] == 4:
                 moves_list.append((black_enpassant_x2 - 1, 5))
             if position[0] == black_enpassant_x2 and position[1] == 4:
-                moves_list.append((black_enpassant_x1 - 1, 5))
+                moves_list.append((black_enpassant_x1 + 1, 5))
         if (position[0], position[1] + 1) not in white_locations and (
                 position[0], position[1] + 1) not in black_locations and position[1] < 7:
             moves_list.append((position[0], position[1] + 1))
@@ -280,11 +280,11 @@ def check_pawn(position, color):
         if (position[0] - 1, position[1] + 1) in black_locations:
             moves_list.append((position[0] - 1, position[1] + 1))
     else:
-        if white_enpassant_y == 3:
+        if allow_white_enpassant:
             if position[0] == white_enpassant_x1 and position[1] == 3:
                 moves_list.append((white_enpassant_x2 - 1, 2))
             if position[0] == white_enpassant_x2 and position[1] == 3:
-                moves_list.append((white_enpassant_x1 - 1, 2))
+                moves_list.append((white_enpassant_x1 + 1, 2))
         if (position[0], position[1] - 1) not in white_locations and (
                 position[0], position[1] - 1) not in black_locations and position[1] > 0:
             moves_list.append((position[0], position[1] - 1))
@@ -377,8 +377,10 @@ def draw_game_over():
 
 
 # main game loop
-white_enpassant_start_coord = -1
-black_enpassant_start_coord = -1
+white_enpassant_start_ycoord = -1
+white_enpassant_start_xcoord = -1
+black_enpassant_start_ycoord = -1
+black_enpassant_start_xcoord = -1
 black_options = check_options(black_pieces, black_locations, 'black')
 white_options = check_options(white_pieces, white_locations, 'white')
 run = True
@@ -410,17 +412,18 @@ while run:
                 if click_coords in white_locations:
                     selection = white_locations.index(click_coords)
                     if 8 <= selection <= 15:  # jeśli wybrano pionek
-                        white_enpassant_start_coord = y_coord  # zapisz 'y' początkowy
+                        white_enpassant_start_ycoord = y_coord  # zapisz 'y' początkowy
+                        white_enpassant_start_xcoord = x_coord
                     if turn_step == 0:
                         turn_step = 1
                 if click_coords in valid_moves and selection != 100:
-                    if 8 <= selection <= 15 and y_coord == 3 and white_enpassant_start_coord == 1:  # jeżeli wybrano pionek i postawiono go na 3 linii a początkowa to 1
+                    if 8 <= selection <= 15 and y_coord == 3 and white_enpassant_start_ycoord == 1:  # jeżeli wybrano pionek i postawiono go na 3 linii a początkowa to 1
                         white_enpassant_x1 = x_coord - 1
                         white_enpassant_x2 = x_coord + 1
-                        white_enpassant_y = y_coord
-                    if black_enpassant_y == 4:
-                        if click_coords == (x_coord, 5):
-                            black_piece = black_locations.index((x_coord, 4))
+                        allow_white_enpassant = True
+                    if allow_black_enpassant:
+                        if click_coords == (black_enpassant_start_xcoord, 5):
+                            black_piece = black_locations.index((black_enpassant_start_xcoord, 4))
                             captured_pieces_white.append(black_pieces[black_piece])
                             black_pieces.pop(black_piece)
                             black_locations.pop(black_piece)
@@ -437,24 +440,25 @@ while run:
                     turn_step = 2
                     selection = 100
                     valid_moves = []
-                    black_enpassant_y = -1
+                    allow_black_enpassant = False
             if turn_step > 1:
                 if click_coords == (8, 8) or click_coords == (9, 8):
                     winner = 'white'
                 if click_coords in black_locations:
                     selection = black_locations.index(click_coords)
                     if 8 <= selection <= 15:  # jeśli wybrano pionek
-                        black_enpassant_start_coord = y_coord  # zapisz 'y' początkowy
+                        black_enpassant_start_ycoord = y_coord  # zapisz 'y' początkowy
+                        black_enpassant_start_xcoord = x_coord # zapisz 'x' początkowy
                     if turn_step == 2:
                         turn_step = 3
                 if click_coords in valid_moves and selection != 100:
-                    if 8 <= selection <= 15 and y_coord == 4 and black_enpassant_start_coord == 6:  # jeżeli wybrano pionek i postawiono go na 3 linii a początkowa to 1
+                    if 8 <= selection <= 15 and y_coord == 4 and black_enpassant_start_ycoord == 6:  # jeżeli wybrano pionek i postawiono go na 4 linii a początkowa to 6
                         black_enpassant_x1 = x_coord - 1
                         black_enpassant_x2 = x_coord + 1
-                        black_enpassant_y = y_coord
-                    if white_enpassant_y == 3:
-                        if click_coords == (x_coord, 2):
-                            white_piece = white_locations.index((x_coord,3))
+                        allow_black_enpassant = True
+                    if allow_white_enpassant:
+                        if click_coords == (white_enpassant_start_xcoord, 2):
+                            white_piece = white_locations.index((white_enpassant_start_xcoord, 3))
                             captured_pieces_black.append(white_pieces[white_piece])
                             white_pieces.pop(white_piece)
                             white_locations.pop(white_piece)
@@ -471,7 +475,7 @@ while run:
                     turn_step = 0
                     selection = 100
                     valid_moves = []
-                    white_enpassant_y = -1
+                    allow_white_enpassant = False
         if event.type == pygame.KEYDOWN and game_over:
             if event.key == pygame.K_RETURN:
                 game_over = False
