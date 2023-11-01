@@ -4,11 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96bd3ddc-7060-4d49-ae6e-045ee25f4538" name="Changes" comment="Initial commit" />
+    <list default="true" id="96bd3ddc-7060-4d49-ae6e-045ee25f4538" name="Changes" comment="Initial commit">
+      <change beforePath="$PROJECT_DIR$/stale_wartosci.py" beforeDir="false" afterPath="$PROJECT_DIR$/stale_wartosci.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -36,7 +45,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "michał",
     "last_opened_file_path": "C:/jakub.szczepanski/Semestr III/Metodyki Zwinne/Projekt",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
