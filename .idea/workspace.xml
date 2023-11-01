@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96bd3ddc-7060-4d49-ae6e-045ee25f4538" name="Changes" comment="Poprawiono prototyp">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-    </list>
+    <list default="true" id="96bd3ddc-7060-4d49-ae6e-045ee25f4538" name="Changes" comment="Poprawiono obsługę błędów" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -69,7 +66,7 @@
       <workItem from="1698706755990" duration="1873000" />
       <workItem from="1698742199725" duration="2560000" />
       <workItem from="1698747242960" duration="13737000" />
-      <workItem from="1698770934160" duration="5890000" />
+      <workItem from="1698770934160" duration="6038000" />
     </task>
     <task id="LOCAL-00001" summary="kk">
       <option name="closed" value="true" />
@@ -127,7 +124,15 @@
       <option name="project" value="LOCAL" />
       <updated>1698698676236</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Poprawiono obsługę błędów">
+      <option name="closed" value="true" />
+      <created>1698849852227</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1698849852227</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -148,9 +153,10 @@
     <MESSAGE value="kk" />
     <MESSAGE value="Initial commit" />
     <MESSAGE value="Poprawiono prototyp" />
-    <option name="LAST_COMMIT_MESSAGE" value="Poprawiono prototyp" />
+    <MESSAGE value="Poprawiono obsługę błędów" />
+    <option name="LAST_COMMIT_MESSAGE" value="Poprawiono obsługę błędów" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/MetodykiZwinneProjekt$main.coverage" NAME="main Coverage Results" MODIFIED="1698849730101" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/MetodykiZwinneProjekt$main.coverage" NAME="main Coverage Results" MODIFIED="1698864315876" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
