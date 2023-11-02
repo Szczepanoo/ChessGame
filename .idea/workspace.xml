@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="96bd3ddc-7060-4d49-ae6e-045ee25f4538" name="Changes" comment="Initial commit">
-      <change afterPath="$PROJECT_DIR$/main2.py" afterDir="false" />
+    <list default="true" id="96bd3ddc-7060-4d49-ae6e-045ee25f4538" name="Changes" comment="main2 - po polsku, bez przelotu, roszad i promocji (tego nie ma w org w mainie)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,7 +115,15 @@
       <option name="project" value="LOCAL" />
       <updated>1698670657733</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="main2 - po polsku, bez przelotu, roszad i promocji (tego nie ma w org w mainie)">
+      <option name="closed" value="true" />
+      <created>1698949061468</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1698949061468</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -135,6 +143,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="kk" />
     <MESSAGE value="Initial commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial commit" />
+    <MESSAGE value="main2 - po polsku, bez przelotu, roszad i promocji (tego nie ma w org w mainie)" />
+    <option name="LAST_COMMIT_MESSAGE" value="main2 - po polsku, bez przelotu, roszad i promocji (tego nie ma w org w mainie)" />
   </component>
 </project>
