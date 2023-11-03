@@ -3,14 +3,15 @@
 
 import pygame
 
+
 pygame.init()
 SZEROKOSC = 1000
 WYSOKOSC = 900
 ekran = pygame.display.set_mode([SZEROKOSC, WYSOKOSC])
 pygame.display.set_caption('Two-Player Pygame Chess!')
-czcionka = pygame.czcionka.Font('freesansbold.ttf', 20)
-srednia_czcionka = pygame.czcionka.Font('freesansbold.ttf', 40)
-duza_czcionka = pygame.czcionka.Font('freesansbold.ttf', 50)
+czcionka = pygame.font.Font('freesansbold.ttf', 20)
+srednia_czcionka = pygame.font.Font('freesansbold.ttf', 40)
+duza_czcionka = pygame.font.Font('freesansbold.ttf', 50)
 zegar = pygame.time.Clock()
 fps = 60
 # game variables and images
@@ -28,6 +29,13 @@ czarne_zbite_figury = []
 kolejnosc = 0
 wybor = 100
 dostepne_ruchy = []
+
+white_enpassant_x1 = -1
+white_enpassant_x2 = -1
+allow_white_enpassant = False
+black_enpassant_x1 = -1
+black_enpassant_x2 = -1
+allow_black_enpassant = False
 # load in game piece images (queen, king, rook, bishop, knight, pawn) x 2
 czarny_hetman = pygame.image.load('assets/images/black queen.png')
 czarny_hetman = pygame.transform.scale(czarny_hetman, (80, 80))
@@ -47,7 +55,6 @@ czarny_skoczek_maly = pygame.transform.scale(czarny_skoczek, (45, 45))
 czarny_pionek = pygame.image.load('assets/images/black pawn.png')
 czarny_pionek = pygame.transform.scale(czarny_pionek, (65, 65))
 czarny_pionek_maly = pygame.transform.scale(czarny_pionek, (45, 45))
-
 bialy_hetman = pygame.image.load('assets/images/white queen.png')
 bialy_hetman = pygame.transform.scale(bialy_hetman, (80, 80))
 bialy_hetman_maly = pygame.transform.scale(bialy_hetman, (45, 45))
@@ -77,6 +84,7 @@ lista_figur = ['pawn', 'queen', 'king', 'knight', 'rook', 'bishop']
 licznik = 0
 zwyciezca = ''
 koniec_gry = False
+
 
 # draw main game board
 def generuj_plansze():
@@ -247,31 +255,47 @@ def ruchy_wieza(pozycja, kolor):
 
 
 # check valid pawn moves
-def ruchy_pionek(pozycja, kolor):
-    lista_ruchow = []
-    if kolor == 'white':
-        if (pozycja[0], pozycja[1] + 1) not in biale_lokalizacja and \
-                (pozycja[0], pozycja[1] + 1) not in czarne_lokalizacja and pozycja[1] < 7:
-            lista_ruchow.append((pozycja[0], pozycja[1] + 1))
-        if (pozycja[0], pozycja[1] + 2) not in biale_lokalizacja and \
-                (pozycja[0], pozycja[1] + 2) not in czarne_lokalizacja and pozycja[1] == 1:
-            lista_ruchow.append((pozycja[0], pozycja[1] + 2))
-        if (pozycja[0] + 1, pozycja[1] + 1) in czarne_lokalizacja:
-            lista_ruchow.append((pozycja[0] + 1, pozycja[1] + 1))
-        if (pozycja[0] - 1, pozycja[1] + 1) in czarne_lokalizacja:
-            lista_ruchow.append((pozycja[0] - 1, pozycja[1] + 1))
+
+
+
+
+
+
+def check_pawn(position, color):
+    moves_list = []
+    if color == 'white':
+        if allow_black_enpassant:
+            if position[0] == black_enpassant_x1 and position[1] == 4:
+                moves_list.append((black_enpassant_x2 - 1, 5))
+            if position[0] == black_enpassant_x2 and position[1] == 4:
+                moves_list.append((black_enpassant_x1 + 1, 5))
+        if (position[0], position[1] + 1) not in white_locations and (
+                position[0], position[1] + 1) not in black_locations and position[1] < 7:
+            moves_list.append((position[0], position[1] + 1))
+        if (position[0], position[1] + 2) not in white_locations and (
+                position[0], position[1] + 2) not in black_locations and position[1] == 1:
+            moves_list.append((position[0], position[1] + 2))
+        if (position[0] + 1, position[1] + 1) in black_locations:
+            moves_list.append((position[0] + 1, position[1] + 1))
+        if (position[0] - 1, position[1] + 1) in black_locations:
+            moves_list.append((position[0] - 1, position[1] + 1))
     else:
-        if (pozycja[0], pozycja[1] - 1) not in biale_lokalizacja and \
-                (pozycja[0], pozycja[1] - 1) not in czarne_lokalizacja and pozycja[1] > 0:
-            lista_ruchow.append((pozycja[0], pozycja[1] - 1))
-        if (pozycja[0], pozycja[1] - 2) not in biale_lokalizacja and \
-                (pozycja[0], pozycja[1] - 2) not in czarne_lokalizacja and pozycja[1] == 6:
-            lista_ruchow.append((pozycja[0], pozycja[1] - 2))
-        if (pozycja[0] + 1, pozycja[1] - 1) in biale_lokalizacja:
-            lista_ruchow.append((pozycja[0] + 1, pozycja[1] - 1))
-        if (pozycja[0] - 1, pozycja[1] - 1) in biale_lokalizacja:
-            lista_ruchow.append((pozycja[0] - 1, pozycja[1] - 1))
-    return lista_ruchow
+        if allow_white_enpassant:
+            if position[0] == white_enpassant_x1 and position[1] == 3:
+                moves_list.append((white_enpassant_x2 - 1, 2))
+            if position[0] == white_enpassant_x2 and position[1] == 3:
+                moves_list.append((white_enpassant_x1 + 1, 2))
+        if (position[0], position[1] - 1) not in white_locations and (
+                position[0], position[1] - 1) not in black_locations and position[1] > 0:
+            moves_list.append((position[0], position[1] - 1))
+        if (position[0], position[1] - 2) not in white_locations and (
+                position[0], position[1] - 2) not in black_locations and position[1] == 6:
+            moves_list.append((position[0], position[1] - 2))
+        if (position[0] + 1, position[1] - 1) in white_locations:
+            moves_list.append((position[0] + 1, position[1] - 1))
+        if (position[0] - 1, position[1] - 1) in white_locations:
+            moves_list.append((position[0] - 1, position[1] - 1))
+    return moves_list
 
 
 # check valid knight moves
@@ -353,6 +377,10 @@ def pokaz_koniec_gry():
 
 
 # main game loop
+white_enpassant_start_ycoord = -1
+white_enpassant_start_xcoord = -1
+black_enpassant_start_ycoord = -1
+black_enpassant_start_xcoord = -1
 czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
 biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
 uruchom = True
@@ -371,7 +399,7 @@ while uruchom:
         dostepne_ruchy = sprawdz_mozliwe_ruchy()
         pokaz_mozliwe_ruchy(dostepne_ruchy)
     # event handling
-    for zdarzenie in pygame.zdarzenie.get():
+    for zdarzenie in pygame.event.get():
         if zdarzenie.type == pygame.QUIT:
             uruchom = False
         if zdarzenie.type == pygame.MOUSEBUTTONDOWN and zdarzenie.button == 1 and not koniec_gry:
@@ -383,9 +411,22 @@ while uruchom:
                     zwyciezca = 'black'
                 if klikniecie_wspolrzedna in biale_lokalizacja:
                     wybor = biale_lokalizacja.index(klikniecie_wspolrzedna)
+                    if 8 <= selection <= 15:  # jeśli wybrano pionek
+                        white_enpassant_start_ycoord = y_coord  # zapisz 'y' początkowy
+                        white_enpassant_start_xcoord = x_coord
                     if kolejnosc == 0:
                         kolejnosc = 1
                 if klikniecie_wspolrzedna in dostepne_ruchy and wybor != 100:
+                    if 8 <= selection <= 15 and y_coord == 3 and white_enpassant_start_ycoord == 1:  # jeżeli wybrano pionek i postawiono go na 3 linii a początkowa to 1
+                        white_enpassant_x1 = x_coord - 1
+                        white_enpassant_x2 = x_coord + 1
+                        allow_white_enpassant = True
+                    if allow_black_enpassant:
+                        if click_coords == (black_enpassant_start_xcoord, 5):
+                            black_piece = black_locations.index((black_enpassant_start_xcoord, 4))
+                            captured_pieces_white.append(black_pieces[black_piece])
+                            black_pieces.pop(black_piece)
+                            black_locations.pop(black_piece)
                     biale_lokalizacja[wybor] = klikniecie_wspolrzedna
                     if klikniecie_wspolrzedna in czarne_lokalizacja:
                         czarne_figura = czarne_lokalizacja.index(klikniecie_wspolrzedna)
@@ -399,14 +440,28 @@ while uruchom:
                     kolejnosc = 2
                     wybor = 100
                     dostepne_ruchy = []
+                    allow_black_enpassant = False
             if kolejnosc > 1:
                 if klikniecie_wspolrzedna == (8, 8) or klikniecie_wspolrzedna == (9, 8):
                     zwyciezca = 'white'
                 if klikniecie_wspolrzedna in czarne_lokalizacja:
                     wybor = czarne_lokalizacja.index(klikniecie_wspolrzedna)
+                    if 8 <= selection <= 15:  # jeśli wybrano pionek
+                        black_enpassant_start_ycoord = y_coord  # zapisz 'y' początkowy
+                        black_enpassant_start_xcoord = x_coord # zapisz 'x' początkowy
                     if kolejnosc == 2:
                         kolejnosc = 3
                 if klikniecie_wspolrzedna in dostepne_ruchy and wybor != 100:
+                    if 8 <= selection <= 15 and y_coord == 4 and black_enpassant_start_ycoord == 6:  # jeżeli wybrano pionek i postawiono go na 4 linii a początkowa to 6
+                        black_enpassant_x1 = x_coord - 1
+                        black_enpassant_x2 = x_coord + 1
+                        allow_black_enpassant = True
+                    if allow_white_enpassant:
+                        if click_coords == (white_enpassant_start_xcoord, 2):
+                            white_piece = white_locations.index((white_enpassant_start_xcoord, 3))
+                            captured_pieces_black.append(white_pieces[white_piece])
+                            white_pieces.pop(white_piece)
+                            white_locations.pop(white_piece)
                     czarne_lokalizacja[wybor] = klikniecie_wspolrzedna
                     if klikniecie_wspolrzedna in biale_lokalizacja:
                         biale_figura = biale_lokalizacja.index(klikniecie_wspolrzedna)
@@ -420,6 +475,7 @@ while uruchom:
                     kolejnosc = 0
                     wybor = 100
                     dostepne_ruchy = []
+                    allow_white_enpassant = False
         if zdarzenie.type == pygame.KEYDOWN and koniec_gry:
             if zdarzenie.key == pygame.K_RETURN:
                 koniec_gry = False
