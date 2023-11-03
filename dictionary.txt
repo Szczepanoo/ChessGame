@@ -22,6 +22,15 @@ sprawdz_roszade	 - 	check_castling
 sprawdz_wybor_promocji	 - 	check_promo_select
 
 
+FIGURY:
+
+pawn - pionek
+rook -  wieza
+knight - skoczek
+bishop - goniec
+queen - hetman
+king - krol
+
 
 ZMIENNE:
 
