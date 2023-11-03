@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6251275d-fb08-420d-816f-e45a3d5b295b" name="Changes" comment="Ujednolicenie nazw plików">
+      <change beforePath="$PROJECT_DIR$/.idea/Projekt.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Projekt.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/additions.py" beforeDir="false" afterPath="$PROJECT_DIR$/additions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constance.py" beforeDir="false" afterPath="$PROJECT_DIR$/constants.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dictionary.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionary.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="sylwia" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "git-widget-placeholder": "code-review",
+    "node.js.selected.package.tslint": "(autodetect)"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Programy\PyCharm 2023.2.3\Projekty\ChessGame\assets" />
+    </key>
+  </component>
+  <component name="TaskManager">
+    <task id="LOCAL-00001" summary="Ujednolicenie nazw plików">
+      <option name="closed" value="true" />
+      <created>1699006060346</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1699006060346</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Przetłumaczenie additions.py i stworzenie pliku z tłumaczeniami. Dostępne również w Google Spreadsheet (https://docs.google.com/spreadsheets/d/1sK6hazsvYZ2WzdV1yEz_5Y2Vf2UscvGW6PS-jTFr9uI/edit?usp=sharing)" />
+    <MESSAGE value="Ujednolicenie nazw plików" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ujednolicenie nazw plików" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/ChessGame$main.coverage" NAME="main Coverage Results" MODIFIED="1699012904844" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+</project>
