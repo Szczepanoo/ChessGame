@@ -22,6 +22,15 @@ sprawdz_roszade	 - 	check_castling
 sprawdz_wybor_promocji	 - 	check_promo_select
 
 
+FIGURY:
+
+pawn - pionek
+rook -  wieza
+knight - skoczek
+bishop - goniec
+queen - hetman
+king - krol
+
 
 ZMIENNE:
 
@@ -53,7 +62,7 @@ czarne_zbite_figury	 - 	captured_pieces_black
 czcionka	 - 	font
 srednia_czcionka	 - 	medium_font
 duza_czcionka	 - 	big_font
-czerne_opcje	 - 	black_options
+czarne_opcje - 	black_options
 dostepne_ruchy	 - 	valid_moves
 druga_lista	 - 	second_list
 ekran	 - 	screen

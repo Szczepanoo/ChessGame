@@ -36,7 +36,7 @@ def generuj_figury():
         if biale_figury[i] == 'pawn':
             ekran.blit(biale_pionek, (biale_lokalizacja[i][0] * 100 + 22, biale_lokalizacja[i][1] * 100 + 30))
         else:
-            ekran.blit(biale_obrazy[index], (biale_lokalizacja[i][0] * 100 + 10, biale_lokalizacja[i][1] * 100 + 10))
+            ekran.blit(biale_obraz[index], (biale_lokalizacja[i][0] * 100 + 10, biale_lokalizacja[i][1] * 100 + 10))
         if kolejnosc < 2:
             if wybor == i:
                 pygame.draw.rect(ekran, 'red', [biale_lokalizacja[i][0] * 100 + 1, biale_lokalizacja[i][1] * 100 + 1,
@@ -242,7 +242,7 @@ def sprawdz_mozliwe_ruchy():
     if kolejnosc < 2:
         lista_opcji = biale_opcje
     else:
-        lista_opcji = czerne_opcje
+        lista_opcji = czarne_opcje
     mozliwe_opcje = lista_opcji[wybor]
     return mozliwe_opcje
 
@@ -262,11 +262,11 @@ def pokaz_zbite_figury():
     for i in range(len(biale_zbite_figury)):
         zbite_figury = biale_zbite_figury[i]
         index = lista_figur.index(zbite_figury)
-        ekran.blit(czarne_male_obrazy[index], (825, 5 + 50 * i))
+        ekran.blit(czarne_male_obraz[index], (825, 5 + 50 * i))
     for i in range(len(czarne_zbite_figury)):
         zbite_figury = czarne_zbite_figury[i]
         index = lista_figur.index(zbite_figury)
-        ekran.blit(biale_male_obrazy[index], (925, 5 + 50 * i))
+        ekran.blit(biale_male_obraz[index], (925, 5 + 50 * i))
 
 
 # draw a flashing square around king if in check
@@ -277,8 +277,8 @@ def pokaz_czy_szach():
         if 'king' in biale_figury:
             king_index = biale_figury.index('king')
             king_location = biale_lokalizacja[king_index]
-            for i in range(len(czerne_opcje)):
-                if king_location in czerne_opcje[i]:
+            for i in range(len(czarne_opcje)):
+                if king_location in czarne_opcje[i]:
                     szach = True
                     if licznik < 15:
                         pygame.draw.rect(ekran, 'dark red', [biale_lokalizacja[king_index][0] * 100 + 1,
@@ -346,7 +346,7 @@ def sprawdz_roszade():
                     puste_pola = [(krol_pozycja[0] - 1, krol_pozycja[1]), (krol_pozycja[0] - 2, krol_pozycja[1])]
                 for j in range(len(puste_pola)):
                     if puste_pola[j] in biale_lokalizacja or puste_pola[j] in czarne_lokalizacja or \
-                            puste_pola[j] in czerne_opcje or wieza_indexy[i]:
+                            puste_pola[j] in czarne_opcje or wieza_indexy[i]:
                         roszada = False
                 if roszada:
                     ruchy_roszady.append((puste_pola[1], puste_pola[0]))
@@ -421,7 +421,7 @@ def promocja():
         for i in range(len(biale_promocja)):
             figura = biale_promocja[i]
             index = lista_figur.index(figura)
-            ekran.blit(biale_obrazy[index], (860, 5 + 100 * i))
+            ekran.blit(biale_obraz[index], (860, 5 + 100 * i))
     elif czarne_promuj:
         kolor = 'black'
         for i in range(len(czarne_promocja)):
@@ -443,16 +443,16 @@ def sprawdz_wybor_promocji():
 
 
 # main game loop
-czerne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
+czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
 biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
 uruchom = True
 while uruchom:
-    timer.tick(fps)
+    zegar.tick(fps)
     if licznik < 30:
         licznik += 1
     else:
         licznik = 0
-    screen.fill('dark gray')
+    ekran.fill('dark gray')
     generuj_plansze()
     generuj_figury()
     pokaz_zbite_figury()
@@ -468,12 +468,12 @@ while uruchom:
         if wybrany_element == 'king':
             pokaz_roszada(ruchy_roszada)
     # event handling
-    for zdarzenie in pygame.event.get():
-        if zdarzenie.type == pygame.QUIT:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
             uruchom = False
-        if zdarzenie.type == pygame.MOUSEBUTTONDOWN and zdarzenie.button == 1 and not koniec_gry:
-            x_wspolrzedna = zdarzenie.pos[0] // 100
-            y_wspolrzedna = zdarzenie.pos[1] // 100
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and not koniec_gry:
+            x_wspolrzedna = event.pos[0] // 100
+            y_wspolrzedna = event.pos[1] // 100
             klikniecie_wspolrzedna = (x_wspolrzedna, y_wspolrzedna)
             if kolejnosc <= 1:
                 if klikniecie_wspolrzedna == (8, 8) or klikniecie_wspolrzedna == (9, 8):
@@ -503,7 +503,7 @@ while uruchom:
                         czarne_figury.pop(czarne_figura)
                         czarne_lokalizacja.pop(czarne_figura)
                         czarne_ruch.pop(czarne_figura)
-                    czerne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
+                    czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
                     biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
                     kolejnosc = 2
                     wybor = 100
@@ -520,7 +520,7 @@ while uruchom:
                                 wieza_wspolrzedne = (7, 0)
                             wieza_index = biale_lokalizacja.index(wieza_wspolrzedne)
                             biale_lokalizacja[wieza_index] = ruchy_roszada[q][1]
-                            czerne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
+                            czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
                             biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
                             kolejnosc = 2
                             wybor = 100
@@ -552,7 +552,7 @@ while uruchom:
                         biale_figury.pop(biale_figura)
                         biale_lokalizacja.pop(biale_figura)
                         biale_ruch.pop(biale_figura)
-                    czerne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
+                    czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
                     biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
                     kolejnosc = 0
                     wybor = 100
@@ -569,13 +569,13 @@ while uruchom:
                                 wieza_wspolrzedne = (7, 7)
                             wieza_index = czarne_lokalizacja.index(wieza_wspolrzedne)
                             czarne_lokalizacja[wieza_index] = ruchy_roszada[q][1]
-                            czerne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
+                            czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
                             biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
                             kolejnosc = 0
                             wybor = 100
                             dostepne_ruchy = []
-        if zdarzenie.type == pygame.KEYDOWN and koniec_gry:
-            if zdarzenie.key == pygame.K_RETURN:
+        if event.type == pygame.KEYDOWN and koniec_gry:
+            if event.key == pygame.K_RETURN:
                 koniec_gry = False
                 zwyciezca = ''
                 biale_figury = ['rook', 'knight', 'bishop', 'king', 'queen', 'bishop', 'knight', 'rook',
@@ -595,7 +595,7 @@ while uruchom:
                 kolejnosc = 0
                 wybor = 100
                 dostepne_ruchy = []
-                czerne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
+                czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
                 biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
 
     if zwyciezca != '':

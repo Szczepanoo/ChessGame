@@ -1,82 +1,7 @@
-# two player chess in python with Pygame!
-# part one, set up variables images and game loop
-
 import pygame
+from constants import *
 
 pygame.init()
-SZEROKOSC = 1000
-WYSOKOSC = 900
-ekran = pygame.display.set_mode([SZEROKOSC, WYSOKOSC])
-pygame.display.set_caption('Two-Player Pygame Chess!')
-czcionka = pygame.czcionka.Font('freesansbold.ttf', 20)
-srednia_czcionka = pygame.czcionka.Font('freesansbold.ttf', 40)
-duza_czcionka = pygame.czcionka.Font('freesansbold.ttf', 50)
-zegar = pygame.time.Clock()
-fps = 60
-# game variables and images
-biale_figury = ['rook', 'knight', 'bishop', 'king', 'queen', 'bishop', 'knight', 'rook',
-                'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn']
-biale_lokalizacja = [(0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0), (7, 0),
-                     (0, 1), (1, 1), (2, 1), (3, 1), (4, 1), (5, 1), (6, 1), (7, 1)]
-czarne_figury = ['rook', 'knight', 'bishop', 'king', 'queen', 'bishop', 'knight', 'rook',
-                'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn']
-czarne_lokalizacja = [(0, 7), (1, 7), (2, 7), (3, 7), (4, 7), (5, 7), (6, 7), (7, 7),
-                      (0, 6), (1, 6), (2, 6), (3, 6), (4, 6), (5, 6), (6, 6), (7, 6)]
-biale_zbite_figury = []
-czarne_zbite_figury = []
-# 0 - whites turn no selection: 1-whites turn piece selected: 2- black turn no selection, 3 - black turn piece selected
-kolejnosc = 0
-wybor = 100
-dostepne_ruchy = []
-# load in game piece images (queen, king, rook, bishop, knight, pawn) x 2
-czarny_hetman = pygame.image.load('assets/images/black queen.png')
-czarny_hetman = pygame.transform.scale(czarny_hetman, (80, 80))
-czarny_hetman_maly = pygame.transform.scale(czarny_hetman, (45, 45))
-czarny_krol = pygame.image.load('assets/images/black king.png')
-czarny_krol = pygame.transform.scale(czarny_krol, (80, 80))
-czarny_krol_maly = pygame.transform.scale(czarny_krol, (45, 45))
-czarna_wieza = pygame.image.load('assets/images/black rook.png')
-czarna_wieza = pygame.transform.scale(czarna_wieza, (80, 80))
-czarna_wieza_mala = pygame.transform.scale(czarna_wieza, (45, 45))
-czarny_goniec = pygame.image.load('assets/images/black bishop.png')
-czarny_goniec = pygame.transform.scale(czarny_goniec, (80, 80))
-czarny_goniec_maly = pygame.transform.scale(czarny_goniec, (45, 45))
-czarny_skoczek = pygame.image.load('assets/images/black knight.png')
-czarny_skoczek = pygame.transform.scale(czarny_skoczek, (80, 80))
-czarny_skoczek_maly = pygame.transform.scale(czarny_skoczek, (45, 45))
-czarny_pionek = pygame.image.load('assets/images/black pawn.png')
-czarny_pionek = pygame.transform.scale(czarny_pionek, (65, 65))
-czarny_pionek_maly = pygame.transform.scale(czarny_pionek, (45, 45))
-
-bialy_hetman = pygame.image.load('assets/images/white queen.png')
-bialy_hetman = pygame.transform.scale(bialy_hetman, (80, 80))
-bialy_hetman_maly = pygame.transform.scale(bialy_hetman, (45, 45))
-bialy_krol = pygame.image.load('assets/images/white king.png')
-bialy_krol = pygame.transform.scale(bialy_krol, (80, 80))
-bialy_krol_maly = pygame.transform.scale(bialy_krol, (45, 45))
-biala_wieza = pygame.image.load('assets/images/white rook.png')
-biala_wieza = pygame.transform.scale(biala_wieza, (80, 80))
-biala_wieza_mala = pygame.transform.scale(biala_wieza, (45, 45))
-bialy_goniec = pygame.image.load('assets/images/white bishop.png')
-bialy_goniec = pygame.transform.scale(bialy_goniec, (80, 80))
-bialy_goniec_maly = pygame.transform.scale(bialy_goniec, (45, 45))
-bialy_skoczek = pygame.image.load('assets/images/white knight.png')
-bialy_skoczek = pygame.transform.scale(bialy_skoczek, (80, 80))
-bialy_skoczek_maly = pygame.transform.scale(bialy_skoczek, (45, 45))
-bialy_pionek = pygame.image.load('assets/images/white pawn.png')
-bialy_pionek = pygame.transform.scale(bialy_pionek, (65, 65))
-bialy_pionek_maly = pygame.transform.scale(bialy_pionek, (45, 45))
-biale_obrazy = [bialy_pionek, bialy_hetman, bialy_krol, bialy_skoczek, biala_wieza, bialy_goniec]
-biale_male_obrazy = [bialy_pionek_maly, bialy_hetman_maly, bialy_krol_maly, bialy_skoczek_maly,
-                     biala_wieza_mala, bialy_goniec_maly]
-czarne_obrazy = [czarny_pionek, czarny_hetman, czarny_krol, czarny_skoczek, czarna_wieza, czarny_goniec]
-czarne_male_obrazy = [czarny_pionek_maly, czarny_hetman_maly, czarny_krol_maly, czarny_skoczek_maly,
-                      czarna_wieza_mala, czarny_goniec_maly]
-lista_figur = ['pawn', 'queen', 'king', 'knight', 'rook', 'bishop']
-# check variables/ flashing counter
-licznik = 0
-zwyciezca = ''
-koniec_gry = False
 
 # draw main game board
 def generuj_plansze():
@@ -104,9 +29,9 @@ def generuj_figury():
     for i in range(len(biale_figury)):
         index = lista_figur.index(biale_figury[i])
         if biale_figury[i] == 'pawn':
-            ekran.blit(bialy_pionek, (biale_lokalizacja[i][0] * 100 + 22, biale_lokalizacja[i][1] * 100 + 30))
+            ekran.blit(biale_pionek, (biale_lokalizacja[i][0] * 100 + 22, biale_lokalizacja[i][1] * 100 + 30))
         else:
-            ekran.blit(biale_obrazy[index], (biale_lokalizacja[i][0] * 100 + 10, biale_lokalizacja[i][1] * 100 + 10))
+            ekran.blit(biale_obraz[index], (biale_lokalizacja[i][0] * 100 + 10, biale_lokalizacja[i][1] * 100 + 10))
         if kolejnosc < 2:
             if wybor == i:
                 pygame.draw.rect(ekran, 'red', [biale_lokalizacja[i][0] * 100 + 1, biale_lokalizacja[i][1] * 100 + 1,
@@ -115,9 +40,9 @@ def generuj_figury():
     for i in range(len(czarne_figury)):
         index = lista_figur.index(czarne_figury[i])
         if czarne_figury[i] == 'pawn':
-            ekran.blit(czarny_pionek, (czarne_lokalizacja[i][0] * 100 + 22, czarne_lokalizacja[i][1] * 100 + 30))
+            ekran.blit(czarne_pionek, (czarne_lokalizacja[i][0] * 100 + 22, czarne_lokalizacja[i][1] * 100 + 30))
         else:
-            ekran.blit(czarne_obrazy[index], (czarne_lokalizacja[i][0] * 100 + 10, czarne_lokalizacja[i][1] * 100 + 10))
+            ekran.blit(czarne_obraz[index], (czarne_lokalizacja[i][0] * 100 + 10, czarne_lokalizacja[i][1] * 100 + 10))
         if kolejnosc >= 2:
             if wybor == i:
                 pygame.draw.rect(ekran, 'blue', [czarne_lokalizacja[i][0] * 100 + 1, czarne_lokalizacja[i][1] * 100 + 1,
@@ -126,8 +51,10 @@ def generuj_figury():
 
 # function to check all pieces valid options on board
 def sprawdz_mozliwe_opcje(figury, lokalizacje, tura):
+    global ruchy_roszada
     lista_ruchow = []
     lista_wszystkich_ruchow = []
+    ruchy_roszada = []
     for i in range((len(figury))):
         lokalizacja = lokalizacje[i]
         figura = figury[i]
@@ -142,7 +69,7 @@ def sprawdz_mozliwe_opcje(figury, lokalizacje, tura):
         elif figura == 'queen':
             lista_ruchow = ruchy_hetman(lokalizacja, tura)
         elif figura == 'king':
-            lista_ruchow = ruchy_krol(lokalizacja, tura)
+            lista_ruchow, ruchy_roszada = ruchy_krol(lokalizacja, tura)
         lista_wszystkich_ruchow.append(lista_ruchow)
     return lista_wszystkich_ruchow
 
@@ -150,6 +77,7 @@ def sprawdz_mozliwe_opcje(figury, lokalizacje, tura):
 # check king valid moves
 def ruchy_krol(pozycja, kolor):
     lista_ruchow = []
+    ruchy_roszady = sprawdz_roszade()
     if kolor == 'white':
         lista_wrogow = czarne_lokalizacja
         lista_przyjaciol = biale_lokalizacja
@@ -162,7 +90,7 @@ def ruchy_krol(pozycja, kolor):
         cel = (pozycja[0] + cele[i][0], pozycja[1] + cele[i][1])
         if cel not in lista_przyjaciol and 0 <= cel[0] <= 7 and 0 <= cel[1] <= 7:
             lista_ruchow.append(cel)
-    return lista_ruchow
+    return lista_ruchow, ruchy_roszady
 
 
 # check queen valid moves
@@ -253,23 +181,35 @@ def ruchy_pionek(pozycja, kolor):
         if (pozycja[0], pozycja[1] + 1) not in biale_lokalizacja and \
                 (pozycja[0], pozycja[1] + 1) not in czarne_lokalizacja and pozycja[1] < 7:
             lista_ruchow.append((pozycja[0], pozycja[1] + 1))
-        if (pozycja[0], pozycja[1] + 2) not in biale_lokalizacja and \
-                (pozycja[0], pozycja[1] + 2) not in czarne_lokalizacja and pozycja[1] == 1:
-            lista_ruchow.append((pozycja[0], pozycja[1] + 2))
+            # indent the check for two spaces ahead, so it is only checked if one space ahead is also open
+            if (pozycja[0], pozycja[1] + 2) not in biale_lokalizacja and \
+                    (pozycja[0], pozycja[1] + 2) not in czarne_lokalizacja and pozycja[1] == 1:
+                lista_ruchow.append((pozycja[0], pozycja[1] + 2))
         if (pozycja[0] + 1, pozycja[1] + 1) in czarne_lokalizacja:
             lista_ruchow.append((pozycja[0] + 1, pozycja[1] + 1))
         if (pozycja[0] - 1, pozycja[1] + 1) in czarne_lokalizacja:
+            lista_ruchow.append((pozycja[0] - 1, pozycja[1] + 1))
+        # add en passant move checker
+        if (pozycja[0] + 1, pozycja[1] + 1) == czarne_w_przelocie:
+            lista_ruchow.append((pozycja[0] + 1, pozycja[1] + 1))
+        if (pozycja[0] - 1, pozycja[1] + 1) == czarne_w_przelocie:
             lista_ruchow.append((pozycja[0] - 1, pozycja[1] + 1))
     else:
         if (pozycja[0], pozycja[1] - 1) not in biale_lokalizacja and \
                 (pozycja[0], pozycja[1] - 1) not in czarne_lokalizacja and pozycja[1] > 0:
             lista_ruchow.append((pozycja[0], pozycja[1] - 1))
-        if (pozycja[0], pozycja[1] - 2) not in biale_lokalizacja and \
-                (pozycja[0], pozycja[1] - 2) not in czarne_lokalizacja and pozycja[1] == 6:
-            lista_ruchow.append((pozycja[0], pozycja[1] - 2))
+            # indent the check for two spaces ahead, so it is only checked if one space ahead is also open
+            if (pozycja[0], pozycja[1] - 2) not in biale_lokalizacja and \
+                    (pozycja[0], pozycja[1] - 2) not in czarne_lokalizacja and pozycja[1] == 6:
+                lista_ruchow.append((pozycja[0], pozycja[1] - 2))
         if (pozycja[0] + 1, pozycja[1] - 1) in biale_lokalizacja:
             lista_ruchow.append((pozycja[0] + 1, pozycja[1] - 1))
         if (pozycja[0] - 1, pozycja[1] - 1) in biale_lokalizacja:
+            lista_ruchow.append((pozycja[0] - 1, pozycja[1] - 1))
+        # add en passant move checker
+        if (pozycja[0] + 1, pozycja[1] - 1) == biale_w_przelocie:
+            lista_ruchow.append((pozycja[0] + 1, pozycja[1] - 1))
+        if (pozycja[0] - 1, pozycja[1] - 1) == biale_w_przelocie:
             lista_ruchow.append((pozycja[0] - 1, pozycja[1] - 1))
     return lista_ruchow
 
@@ -317,21 +257,24 @@ def pokaz_zbite_figury():
     for i in range(len(biale_zbite_figury)):
         zbite_figury = biale_zbite_figury[i]
         index = lista_figur.index(zbite_figury)
-        ekran.blit(czarne_male_obrazy[index], (825, 5 + 50 * i))
+        ekran.blit(czarne_male_obraz[index], (825, 5 + 50 * i))
     for i in range(len(czarne_zbite_figury)):
         zbite_figury = czarne_zbite_figury[i]
         index = lista_figur.index(zbite_figury)
-        ekran.blit(biale_male_obrazy[index], (925, 5 + 50 * i))
+        ekran.blit(biale_male_obraz[index], (925, 5 + 50 * i))
 
 
 # draw a flashing square around king if in check
 def pokaz_czy_szach():
+    global szach
+    szach = False
     if kolejnosc < 2:
         if 'king' in biale_figury:
             king_index = biale_figury.index('king')
             king_location = biale_lokalizacja[king_index]
             for i in range(len(czarne_opcje)):
                 if king_location in czarne_opcje[i]:
+                    szach = True
                     if licznik < 15:
                         pygame.draw.rect(ekran, 'dark red', [biale_lokalizacja[king_index][0] * 100 + 1,
                                                              biale_lokalizacja[king_index][1] * 100 + 1, 100, 100], 5)
@@ -341,6 +284,7 @@ def pokaz_czy_szach():
             king_location = czarne_lokalizacja[king_index]
             for i in range(len(biale_opcje)):
                 if king_location in biale_opcje[i]:
+                    szach = True
                     if licznik < 15:
                         pygame.draw.rect(ekran, 'dark blue', [czarne_lokalizacja[king_index][0] * 100 + 1,
                                                               czarne_lokalizacja[king_index][1] * 100 + 1, 100, 100], 5)
@@ -351,6 +295,144 @@ def pokaz_koniec_gry():
     ekran.blit(czcionka.render(f'{zwyciezca} won the game!', True, 'white'), (210, 210))
     ekran.blit(czcionka.render(f'Press ENTER to Restart!', True, 'white'), (210, 240))
 
+def sprawdz_bicie_w_przelocie(stare_wspolrzedne, nowe_wspolrzedne):
+    if kolejnosc <= 1:
+        index = biale_lokalizacja.index(stare_wspolrzedne)
+        wspolrzedne_w_przelocie = (nowe_wspolrzedne[0], nowe_wspolrzedne[1] - 1)
+        figura = biale_figury[index]
+    else:
+        index = czarne_lokalizacja.index(stare_wspolrzedne)
+        wspolrzedne_w_przelocie = (nowe_wspolrzedne[0], nowe_wspolrzedne[1] + 1)
+        figura = czarne_figury[index]
+    if figura == 'pawn' and abs(stare_wspolrzedne[1] - nowe_wspolrzedne[1]) > 1:
+        # if piece was pawn and moved two spaces, return EP coords as defined above
+        pass
+    else:
+        wspolrzedne_w_przelocie = (100, 100)
+    return wspolrzedne_w_przelocie
+
+def sprawdz_roszade():
+    # king must not currently be in check, neither the rook nor king has moved previously, nothing between
+    # and the king does not pass through or finish on an attacked piece
+    ruchy_roszady = []  # store each valid castle move as [((king_coords), (castle_coords))]
+    wieza_indexy = []
+    wieza_lokalizacje = []
+    krol_index = 0
+    krol_pozycja = (0, 0)
+    if kolejnosc > 1:
+        for i in range(len(biale_figury)):
+            if biale_figury[i] == 'rook':
+                wieza_indexy.append(biale_ruch[i])
+                wieza_lokalizacje.append(biale_lokalizacja[i])
+            if biale_figury[i] == 'king':
+                krol_index = i
+                krol_pozycja = biale_lokalizacja[i]
+        if not biale_ruch[krol_index] and False in wieza_indexy and not szach:
+            for i in range(len(wieza_indexy)):
+                roszada = True
+                if wieza_lokalizacje[i][0] > krol_pozycja[0]:
+                    puste_pola = [(krol_pozycja[0] + 1, krol_pozycja[1]), (krol_pozycja[0] + 2, krol_pozycja[1]),
+                                     (krol_pozycja[0] + 3, krol_pozycja[1])]
+                else:
+                    puste_pola = [(krol_pozycja[0] - 1, krol_pozycja[1]), (krol_pozycja[0] - 2, krol_pozycja[1])]
+                for j in range(len(puste_pola)):
+                    if puste_pola[j] in biale_lokalizacja or puste_pola[j] in czarne_lokalizacja or \
+                            puste_pola[j] in czarne_opcje or wieza_indexy[i]:
+                        roszada = False
+                if roszada:
+                    ruchy_roszady.append((puste_pola[1], puste_pola[0]))
+    else:
+        for i in range(len(czarne_figury)):
+            if czarne_figury[i] == 'rook':
+                wieza_indexy.append(czarne_ruch[i])
+                wieza_lokalizacje.append(czarne_lokalizacja[i])
+            if czarne_figury[i] == 'king':
+                krol_index = i
+                krol_pozycja = czarne_lokalizacja[i]
+        if not czarne_ruch[krol_index] and False in wieza_indexy and not szach:
+            for i in range(len(wieza_indexy)):
+                roszada = True
+                if wieza_lokalizacje[i][0] > krol_pozycja[0]:
+                    puste_pola = [(krol_pozycja[0] + 1, krol_pozycja[1]), (krol_pozycja[0] + 2, krol_pozycja[1]),
+                                     (krol_pozycja[0] + 3, krol_pozycja[1])]
+                else:
+                    puste_pola = [(krol_pozycja[0] - 1, krol_pozycja[1]), (krol_pozycja[0] - 2, krol_pozycja[1])]
+                for j in range(len(puste_pola)):
+                    if puste_pola[j] in biale_lokalizacja or puste_pola[j] in czarne_lokalizacja or \
+                            puste_pola[j] in biale_opcje or wieza_indexy[i]:
+                        roszada = False
+                if roszada:
+                    ruchy_roszady.append((puste_pola[1], puste_pola[0]))
+    return ruchy_roszady
+
+
+def pokaz_roszada(ruchy):
+    if kolejnosc < 2:
+        kolor = 'red'
+    else:
+        kolor = 'blue'
+    for i in range(len(ruchy)):
+        pygame.draw.circle(ekran, kolor, (ruchy[i][0][0] * 100 + 50, ruchy[i][0][1] * 100 + 70), 8)
+        ekran.blit(czcionka.render('king', True, 'black'), (ruchy[i][0][0] * 100 + 30, ruchy[i][0][1] * 100 + 70))
+        pygame.draw.circle(ekran, kolor, (ruchy[i][1][0] * 100 + 50, ruchy[i][1][1] * 100 + 70), 8)
+        ekran.blit(czcionka.render('rook', True, 'black'),
+                   (ruchy[i][1][0] * 100 + 30, ruchy[i][1][1] * 100 + 70))
+        pygame.draw.line(ekran, kolor, (ruchy[i][0][0] * 100 + 50, ruchy[i][0][1] * 100 + 70),
+                         (ruchy[i][1][0] * 100 + 50, ruchy[i][1][1] * 100 + 70), 2)
+
+
+# add pawn promotion
+def sprawdz_promocje():
+    pionek_indexy = []
+    biale_promuj = False
+    czarne_promuj = False
+    promocja_index = 100
+    for i in range(len(biale_figury)):
+        if biale_figury[i] == 'pawn':
+            pionek_indexy.append(i)
+    for i in range(len(pionek_indexy)):
+        if biale_lokalizacja[pionek_indexy[i]][1] == 7:
+            biale_promuj = True
+            promocja_index = pionek_indexy[i]
+    pionek_indexy = []
+    for i in range(len(czarne_figury)):
+        if czarne_figury[i] == 'pawn':
+            pionek_indexy.append(i)
+    for i in range(len(pionek_indexy)):
+        if czarne_lokalizacja[pionek_indexy[i]][1] == 0:
+            czarne_promuj = True
+            promocja_index = pionek_indexy[i]
+    return biale_promuj, czarne_promuj, promocja_index
+
+
+def promocja():
+    pygame.draw.rect(ekran, 'dark gray', [800, 0, 200, 420])
+    biale_promuj, czarne_promuj, promocja_index = sprawdz_promocje()
+    if biale_promuj:
+        kolor = 'white'
+        for i in range(len(biale_promocja)):
+            figura = biale_promocja[i]
+            index = lista_figur.index(figura)
+            ekran.blit(biale_obraz[index], (860, 5 + 100 * i))
+    elif czarne_promuj:
+        kolor = 'black'
+        for i in range(len(czarne_promocja)):
+            figura = czarne_promocja[i]
+            index = lista_figur.index(figura)
+            ekran.blit(czarne_obraz[index], (860, 5 + 100 * i))
+    pygame.draw.rect(ekran, kolor, [800, 0, 200, 420], 8)
+
+
+def sprawdz_wybor_promocji():
+    biale_promuj, czarne_promuj, promocja_index = sprawdz_promocje()
+    mysz_pozycja = pygame.mouse.get_pos()
+    lewy_wcisniety = pygame.mouse.get_pressed()[0]
+    x_pozycja = mysz_pozycja[0] // 100
+    y_pozycja = mysz_pozycja[1] // 100
+    if biale_promuj and lewy_wcisniety and x_pozycja > 7 and y_pozycja < 4:
+        biale_figury[index_promocja] = biale_promocja[y_pozycja]
+    elif czarne_promuj and lewy_wcisniety and x_pozycja > 7 and y_pozycja < 4:
+        czarne_figury[index_promocja] = czarne_promocja[y_pozycja]
 
 # main game loop
 czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
@@ -367,26 +449,37 @@ while uruchom:
     generuj_figury()
     pokaz_zbite_figury()
     pokaz_czy_szach()
+    if not koniec_gry:
+        biale_promuj, czarne_promuj, index_promocja = sprawdz_promocje()
+        if biale_promuj or czarne_promuj:
+            promocja()
+            sprawdz_wybor_promocji()
     if wybor != 100:
         dostepne_ruchy = sprawdz_mozliwe_ruchy()
         pokaz_mozliwe_ruchy(dostepne_ruchy)
+        if wybrany_element == 'king':
+            pokaz_roszada(ruchy_roszada)
     # event handling
-    for zdarzenie in pygame.zdarzenie.get():
-        if zdarzenie.type == pygame.QUIT:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
             uruchom = False
-        if zdarzenie.type == pygame.MOUSEBUTTONDOWN and zdarzenie.button == 1 and not koniec_gry:
-            x_wspolrzedna = zdarzenie.pos[0] // 100
-            y_wspolrzedna = zdarzenie.pos[1] // 100
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and not koniec_gry:
+            x_wspolrzedna = event.pos[0] // 100
+            y_wspolrzedna = event.pos[1] // 100
             klikniecie_wspolrzedna = (x_wspolrzedna, y_wspolrzedna)
             if kolejnosc <= 1:
                 if klikniecie_wspolrzedna == (8, 8) or klikniecie_wspolrzedna == (9, 8):
                     zwyciezca = 'black'
                 if klikniecie_wspolrzedna in biale_lokalizacja:
                     wybor = biale_lokalizacja.index(klikniecie_wspolrzedna)
+                    # check what piece is selected, so you can only draw castling ruchy if king is selected
+                    wybrany_element = biale_figury[wybor]
                     if kolejnosc == 0:
                         kolejnosc = 1
                 if klikniecie_wspolrzedna in dostepne_ruchy and wybor != 100:
+                    biale_w_przelocie = sprawdz_bicie_w_przelocie(biale_lokalizacja[wybor], klikniecie_wspolrzedna)
                     biale_lokalizacja[wybor] = klikniecie_wspolrzedna
+                    biale_ruch[wybor] = True
                     if klikniecie_wspolrzedna in czarne_lokalizacja:
                         czarne_figura = czarne_lokalizacja.index(klikniecie_wspolrzedna)
                         biale_zbite_figury.append(czarne_figury[czarne_figura])
@@ -394,20 +487,49 @@ while uruchom:
                             zwyciezca = 'white'
                         czarne_figury.pop(czarne_figura)
                         czarne_lokalizacja.pop(czarne_figura)
+                        czarne_ruch.pop(czarne_figura)
+                    # adding check if en passant pawn was captured
+                    if klikniecie_wspolrzedna == czarne_w_przelocie:
+                        czarne_figura = czarne_lokalizacja.index((czarne_w_przelocie[0], czarne_w_przelocie[1] - 1))
+                        biale_zbite_figury.append(czarne_figury[czarne_figura])
+                        czarne_figury.pop(czarne_figura)
+                        czarne_lokalizacja.pop(czarne_figura)
+                        czarne_ruch.pop(czarne_figura)
                     czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
                     biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
                     kolejnosc = 2
                     wybor = 100
                     dostepne_ruchy = []
+                # add option to castle
+                elif wybor != 100 and wybrany_element == 'king':
+                    for q in range(len(ruchy_roszada)):
+                        if klikniecie_wspolrzedna == ruchy_roszada[q][0]:
+                            biale_lokalizacja[wybor] = klikniecie_wspolrzedna
+                            biale_ruch[wybor] = True
+                            if klikniecie_wspolrzedna == (1, 0):
+                                wieza_wspolrzedne = (0, 0)
+                            else:
+                                wieza_wspolrzedne = (7, 0)
+                            wieza_index = biale_lokalizacja.index(wieza_wspolrzedne)
+                            biale_lokalizacja[wieza_index] = ruchy_roszada[q][1]
+                            czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
+                            biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
+                            kolejnosc = 2
+                            wybor = 100
+                            dostepne_ruchy = []
             if kolejnosc > 1:
                 if klikniecie_wspolrzedna == (8, 8) or klikniecie_wspolrzedna == (9, 8):
                     zwyciezca = 'white'
                 if klikniecie_wspolrzedna in czarne_lokalizacja:
                     wybor = czarne_lokalizacja.index(klikniecie_wspolrzedna)
+                    # check what piece is selected, so you can only draw castling ruchy if king is selected
+                    wybrany_element = czarne_figury[wybor]
                     if kolejnosc == 2:
                         kolejnosc = 3
                 if klikniecie_wspolrzedna in dostepne_ruchy and wybor != 100:
+                    czarne_w_przelocie = sprawdz_bicie_w_przelocie(czarne_lokalizacja[wybor], klikniecie_wspolrzedna)
                     czarne_lokalizacja[wybor] = klikniecie_wspolrzedna
+                    czarne_ruch[wybor] = True
                     if klikniecie_wspolrzedna in biale_lokalizacja:
                         biale_figura = biale_lokalizacja.index(klikniecie_wspolrzedna)
                         czarne_zbite_figury.append(biale_figury[biale_figura])
@@ -415,23 +537,51 @@ while uruchom:
                             zwyciezca = 'black'
                         biale_figury.pop(biale_figura)
                         biale_lokalizacja.pop(biale_figura)
+                        biale_ruch.pop(biale_figura)
+                    if klikniecie_wspolrzedna == biale_w_przelocie:
+                        biale_figura = biale_lokalizacja.index((biale_w_przelocie[0], biale_w_przelocie[1] + 1))
+                        czarne_zbite_figury.append(biale_figury[biale_figura])
+                        biale_figury.pop(biale_figura)
+                        biale_lokalizacja.pop(biale_figura)
+                        biale_ruch.pop(biale_figura)
                     czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
                     biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
                     kolejnosc = 0
                     wybor = 100
                     dostepne_ruchy = []
-        if zdarzenie.type == pygame.KEYDOWN and koniec_gry:
-            if zdarzenie.key == pygame.K_RETURN:
+                # add option to castle
+                elif wybor != 100 and wybrany_element == 'king':
+                    for q in range(len(ruchy_roszada)):
+                        if klikniecie_wspolrzedna == ruchy_roszada[q][0]:
+                            czarne_lokalizacja[wybor] = klikniecie_wspolrzedna
+                            czarne_ruch[wybor] = True
+                            if klikniecie_wspolrzedna == (1, 7):
+                                wieza_wspolrzedne = (0, 7)
+                            else:
+                                wieza_wspolrzedne = (7, 7)
+                            wieza_index = czarne_lokalizacja.index(wieza_wspolrzedne)
+                            czarne_lokalizacja[wieza_index] = ruchy_roszada[q][1]
+                            czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
+                            biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
+                            kolejnosc = 0
+                            wybor = 100
+                            dostepne_ruchy = []
+        if event.type == pygame.KEYDOWN and koniec_gry:
+            if event.key == pygame.K_RETURN:
                 koniec_gry = False
                 zwyciezca = ''
                 biale_figury = ['rook', 'knight', 'bishop', 'king', 'queen', 'bishop', 'knight', 'rook',
                                 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn']
                 biale_lokalizacja = [(0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0), (7, 0),
                                      (0, 1), (1, 1), (2, 1), (3, 1), (4, 1), (5, 1), (6, 1), (7, 1)]
+                biale_ruch = [False, False, False, False, False, False, False, False,
+                              False, False, False, False, False, False, False, False]
                 czarne_figury = ['rook', 'knight', 'bishop', 'king', 'queen', 'bishop', 'knight', 'rook',
                                 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn', 'pawn']
                 czarne_lokalizacja = [(0, 7), (1, 7), (2, 7), (3, 7), (4, 7), (5, 7), (6, 7), (7, 7),
                                       (0, 6), (1, 6), (2, 6), (3, 6), (4, 6), (5, 6), (6, 6), (7, 6)]
+                czarne_ruch = [False, False, False, False, False, False, False, False,
+                               False, False, False, False, False, False, False, False]
                 biale_zbite_figury = []
                 czarne_zbite_figury = []
                 kolejnosc = 0
