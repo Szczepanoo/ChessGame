@@ -30,12 +30,12 @@ kolejnosc = 0
 wybor = 100
 dostepne_ruchy = []
 
-white_enpassant_x1 = -1
-white_enpassant_x2 = -1
-allow_white_enpassant = False
-black_enpassant_x1 = -1
-black_enpassant_x2 = -1
-allow_black_enpassant = False
+bialy_w_przelocie_x1 = -1
+bialy_w_przelocie_x2 = -1
+zezwol_na_bicie_w_przelocie_bialego = False
+czarny_w_przeloce_x1 = -1
+czarny_w_przelocie_x2 = -1
+zezwol_na_bicie_w_przelocie_czarnego = False
 # load in game piece images (queen, king, rook, bishop, knight, pawn) x 2
 czarny_hetman = pygame.image.load('assets/images/black queen.png')
 czarny_hetman = pygame.transform.scale(czarny_hetman, (80, 80))
@@ -261,41 +261,41 @@ def ruchy_wieza(pozycja, kolor):
 
 
 
-def check_pawn(position, color):
-    moves_list = []
-    if color == 'white':
-        if allow_black_enpassant:
-            if position[0] == black_enpassant_x1 and position[1] == 4:
-                moves_list.append((black_enpassant_x2 - 1, 5))
-            if position[0] == black_enpassant_x2 and position[1] == 4:
-                moves_list.append((black_enpassant_x1 + 1, 5))
-        if (position[0], position[1] + 1) not in white_locations and (
-                position[0], position[1] + 1) not in black_locations and position[1] < 7:
-            moves_list.append((position[0], position[1] + 1))
-        if (position[0], position[1] + 2) not in white_locations and (
-                position[0], position[1] + 2) not in black_locations and position[1] == 1:
-            moves_list.append((position[0], position[1] + 2))
-        if (position[0] + 1, position[1] + 1) in black_locations:
-            moves_list.append((position[0] + 1, position[1] + 1))
-        if (position[0] - 1, position[1] + 1) in black_locations:
-            moves_list.append((position[0] - 1, position[1] + 1))
+def ruchy_pionek(pozycja, kolor):
+    lista_ruchow = []
+    if kolor == 'white':
+        if zezwol_na_bicie_w_przelocie_czarnego:
+            if pozycja[0] == czarny_w_przeloce_x1 and pozycja[1] == 4:
+                lista_ruchow.append((czarny_w_przelocie_x2 - 1, 5))
+            if pozycja[0] == czarny_w_przelocie_x2 and pozycja[1] == 4:
+                lista_ruchow.append((czarny_w_przeloce_x1 + 1, 5))
+        if (pozycja[0], pozycja[1] + 1) not in biale_lokalizacja and (
+                pozycja[0], pozycja[1] + 1) not in czarne_lokalizacja and pozycja[1] < 7:
+            lista_ruchow.append((pozycja[0], pozycja[1] + 1))
+        if (pozycja[0], pozycja[1] + 2) not in biale_lokalizacja and (
+                pozycja[0], pozycja[1] + 2) not in czarne_lokalizacja and pozycja[1] == 1:
+            lista_ruchow.append((pozycja[0], pozycja[1] + 2))
+        if (pozycja[0] + 1, pozycja[1] + 1) in czarne_lokalizacja:
+            lista_ruchow.append((pozycja[0] + 1, pozycja[1] + 1))
+        if (pozycja[0] - 1, pozycja[1] + 1) in czarne_lokalizacja:
+            lista_ruchow.append((pozycja[0] - 1, pozycja[1] + 1))
     else:
-        if allow_white_enpassant:
-            if position[0] == white_enpassant_x1 and position[1] == 3:
-                moves_list.append((white_enpassant_x2 - 1, 2))
-            if position[0] == white_enpassant_x2 and position[1] == 3:
-                moves_list.append((white_enpassant_x1 + 1, 2))
-        if (position[0], position[1] - 1) not in white_locations and (
-                position[0], position[1] - 1) not in black_locations and position[1] > 0:
-            moves_list.append((position[0], position[1] - 1))
-        if (position[0], position[1] - 2) not in white_locations and (
-                position[0], position[1] - 2) not in black_locations and position[1] == 6:
-            moves_list.append((position[0], position[1] - 2))
-        if (position[0] + 1, position[1] - 1) in white_locations:
-            moves_list.append((position[0] + 1, position[1] - 1))
-        if (position[0] - 1, position[1] - 1) in white_locations:
-            moves_list.append((position[0] - 1, position[1] - 1))
-    return moves_list
+        if zezwol_na_bicie_w_przelocie_bialego:
+            if pozycja[0] == bialy_w_przelocie_x1 and pozycja[1] == 3:
+                lista_ruchow.append((bialy_w_przelocie_x2 - 1, 2))
+            if pozycja[0] == bialy_w_przelocie_x2 and pozycja[1] == 3:
+                lista_ruchow.append((bialy_w_przelocie_x1 + 1, 2))
+        if (pozycja[0], pozycja[1] - 1) not in biale_lokalizacja and (
+                pozycja[0], pozycja[1] - 1) not in czarne_lokalizacja and pozycja[1] > 0:
+            lista_ruchow.append((pozycja[0], pozycja[1] - 1))
+        if (pozycja[0], pozycja[1] - 2) not in biale_lokalizacja and (
+                pozycja[0], pozycja[1] - 2) not in czarne_lokalizacja and pozycja[1] == 6:
+            lista_ruchow.append((pozycja[0], pozycja[1] - 2))
+        if (pozycja[0] + 1, pozycja[1] - 1) in biale_lokalizacja:
+            lista_ruchow.append((pozycja[0] + 1, pozycja[1] - 1))
+        if (pozycja[0] - 1, pozycja[1] - 1) in biale_lokalizacja:
+            lista_ruchow.append((pozycja[0] - 1, pozycja[1] - 1))
+    return lista_ruchow
 
 
 # check valid knight moves
@@ -377,10 +377,10 @@ def pokaz_koniec_gry():
 
 
 # main game loop
-white_enpassant_start_ycoord = -1
-white_enpassant_start_xcoord = -1
-black_enpassant_start_ycoord = -1
-black_enpassant_start_xcoord = -1
+bialy_w_przelocie_poczatkowy_ykord = -1
+bialy_w_przelocie_poczatkowy_xkord = -1
+czarny_w_przelocie_poczatkowy_ykord = -1
+czarny_w_przelocie_poczatkowy_xkord = -1
 czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
 biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
 uruchom = True
@@ -411,71 +411,71 @@ while uruchom:
                     zwyciezca = 'black'
                 if klikniecie_wspolrzedna in biale_lokalizacja:
                     wybor = biale_lokalizacja.index(klikniecie_wspolrzedna)
-                    if 8 <= selection <= 15:  # jeśli wybrano pionek
-                        white_enpassant_start_ycoord = y_coord  # zapisz 'y' początkowy
-                        white_enpassant_start_xcoord = x_coord
+                    if 8 <= wybor <= 15:  # jeśli wybrano pionek
+                        bialy_w_przelocie_poczatkowy_ykord = y_wspolrzedna  # zapisz 'y' początkowy
+                        bialy_w_przelocie_poczatkowy_xkord = x_wspolrzedna
                     if kolejnosc == 0:
                         kolejnosc = 1
                 if klikniecie_wspolrzedna in dostepne_ruchy and wybor != 100:
-                    if 8 <= selection <= 15 and y_coord == 3 and white_enpassant_start_ycoord == 1:  # jeżeli wybrano pionek i postawiono go na 3 linii a początkowa to 1
-                        white_enpassant_x1 = x_coord - 1
-                        white_enpassant_x2 = x_coord + 1
-                        allow_white_enpassant = True
-                    if allow_black_enpassant:
-                        if click_coords == (black_enpassant_start_xcoord, 5):
-                            black_piece = black_locations.index((black_enpassant_start_xcoord, 4))
-                            captured_pieces_white.append(black_pieces[black_piece])
-                            black_pieces.pop(black_piece)
-                            black_locations.pop(black_piece)
+                    if 8 <= wybor <= 15 and y_wspolrzedna == 3 and bialy_w_przelocie_poczatkowy_ykord == 1:  # jeżeli wybrano pionek i postawiono go na 3 linii a początkowa to 1
+                        bialy_w_przelocie_x1 = x_wspolrzedna - 1
+                        bialy_w_przelocie_x2 = x_wspolrzedna + 1
+                        zezwol_na_bicie_w_przelocie_bialego = True
+                    if zezwol_na_bicie_w_przelocie_czarnego:
+                        if klikniecie_wspolrzedna == (czarny_w_przelocie_poczatkowy_xkord, 5):
+                            czarna_figura = czarne_lokalizacja.index((czarny_w_przelocie_poczatkowy_xkord, 4))
+                            biale_zbite_figury.append(czarne_figury[czarna_figura])
+                            czarne_figury.pop(czarna_figura)
+                            czarne_lokalizacja.pop(czarna_figura)
                     biale_lokalizacja[wybor] = klikniecie_wspolrzedna
                     if klikniecie_wspolrzedna in czarne_lokalizacja:
-                        czarne_figura = czarne_lokalizacja.index(klikniecie_wspolrzedna)
-                        biale_zbite_figury.append(czarne_figury[czarne_figura])
-                        if czarne_figury[czarne_figura] == 'king':
+                        czarna_figura = czarne_lokalizacja.index(klikniecie_wspolrzedna)
+                        biale_zbite_figury.append(czarne_figury[czarna_figura])
+                        if czarne_figury[czarna_figura] == 'king':
                             zwyciezca = 'white'
-                        czarne_figury.pop(czarne_figura)
-                        czarne_lokalizacja.pop(czarne_figura)
+                        czarne_figury.pop(czarna_figura)
+                        czarne_lokalizacja.pop(czarna_figura)
                     czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
                     biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
                     kolejnosc = 2
                     wybor = 100
                     dostepne_ruchy = []
-                    allow_black_enpassant = False
+                    zezwol_na_bicie_w_przelocie_czarnego = False
             if kolejnosc > 1:
                 if klikniecie_wspolrzedna == (8, 8) or klikniecie_wspolrzedna == (9, 8):
                     zwyciezca = 'white'
                 if klikniecie_wspolrzedna in czarne_lokalizacja:
                     wybor = czarne_lokalizacja.index(klikniecie_wspolrzedna)
-                    if 8 <= selection <= 15:  # jeśli wybrano pionek
-                        black_enpassant_start_ycoord = y_coord  # zapisz 'y' początkowy
-                        black_enpassant_start_xcoord = x_coord # zapisz 'x' początkowy
+                    if 8 <= wybor <= 15:  # jeśli wybrano pionek
+                        czarny_w_przelocie_poczatkowy_ykord = y_wspolrzedna  # zapisz 'y' początkowy
+                        czarny_w_przelocie_poczatkowy_xkord = x_wspolrzedna # zapisz 'x' początkowy
                     if kolejnosc == 2:
                         kolejnosc = 3
                 if klikniecie_wspolrzedna in dostepne_ruchy and wybor != 100:
-                    if 8 <= selection <= 15 and y_coord == 4 and black_enpassant_start_ycoord == 6:  # jeżeli wybrano pionek i postawiono go na 4 linii a początkowa to 6
-                        black_enpassant_x1 = x_coord - 1
-                        black_enpassant_x2 = x_coord + 1
-                        allow_black_enpassant = True
-                    if allow_white_enpassant:
-                        if click_coords == (white_enpassant_start_xcoord, 2):
-                            white_piece = white_locations.index((white_enpassant_start_xcoord, 3))
-                            captured_pieces_black.append(white_pieces[white_piece])
-                            white_pieces.pop(white_piece)
-                            white_locations.pop(white_piece)
+                    if 8 <= wybor <= 15 and y_wspolrzedna == 4 and czarny_w_przelocie_poczatkowy_ykord == 6:  # jeżeli wybrano pionek i postawiono go na 4 linii a początkowa to 6
+                        czarny_w_przeloce_x1 = x_wspolrzedna - 1
+                        czarny_w_przelocie_x2 = x_wspolrzedna + 1
+                        zezwol_na_bicie_w_przelocie_czarnego = True
+                    if zezwol_na_bicie_w_przelocie_bialego:
+                        if klikniecie_wspolrzedna == (bialy_w_przelocie_poczatkowy_xkord, 2):
+                            biala_figura = biale_lokalizacja.index((bialy_w_przelocie_poczatkowy_xkord, 3))
+                            czarne_zbite_figury.append(biale_figury[biala_figura])
+                            biale_figury.pop(biala_figura)
+                            biale_lokalizacja.pop(biala_figura)
                     czarne_lokalizacja[wybor] = klikniecie_wspolrzedna
                     if klikniecie_wspolrzedna in biale_lokalizacja:
-                        biale_figura = biale_lokalizacja.index(klikniecie_wspolrzedna)
-                        czarne_zbite_figury.append(biale_figury[biale_figura])
-                        if biale_figury[biale_figura] == 'king':
+                        biala_figura = biale_lokalizacja.index(klikniecie_wspolrzedna)
+                        czarne_zbite_figury.append(biale_figury[biala_figura])
+                        if biale_figury[biala_figura] == 'king':
                             zwyciezca = 'black'
-                        biale_figury.pop(biale_figura)
-                        biale_lokalizacja.pop(biale_figura)
+                        biale_figury.pop(biala_figura)
+                        biale_lokalizacja.pop(biala_figura)
                     czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
                     biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
                     kolejnosc = 0
                     wybor = 100
                     dostepne_ruchy = []
-                    allow_white_enpassant = False
+                    zezwol_na_bicie_w_przelocie_bialego = False
         if zdarzenie.type == pygame.KEYDOWN and koniec_gry:
             if zdarzenie.key == pygame.K_RETURN:
                 koniec_gry = False
