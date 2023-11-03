@@ -3,6 +3,7 @@ from constants import *
 
 pygame.init()
 
+
 # draw main game board
 def generuj_plansze():
     for i in range(32):
@@ -15,13 +16,17 @@ def generuj_plansze():
         pygame.draw.rect(ekran, 'gray', [0, 800, SZEROKOSC, 100])
         pygame.draw.rect(ekran, 'gold', [0, 800, SZEROKOSC, 100], 5)
         pygame.draw.rect(ekran, 'gold', [800, 0, 200, WYSOKOSC], 5)
-        status_tekst = ['White: Select a Piece to Move!', 'White: Select a Destination!',
-                       'Black: Select a Piece to Move!', 'Black: Select a Destination!']
+        status_tekst = ['Białe: Wybierz figurę!', 'Białe: Wybierz pole docelowe!',
+                       'Czarne: Wybierz figurę!', 'Czarne: Wybierz pole docelowe!']
         ekran.blit(duza_czcionka.render(status_tekst[kolejnosc], True, 'black'), (20, 820))
         for i in range(9):
             pygame.draw.line(ekran, 'black', (0, 100 * i), (800, 100 * i), 2)
             pygame.draw.line(ekran, 'black', (100 * i, 0), (100 * i, 800), 2)
         ekran.blit(srednia_czcionka.render('FORFEIT', True, 'black'), (810, 830))
+        if biale_promuj or czarne_promuj:
+            pygame.draw.rect(ekran, 'gray', [0, 800, SZEROKOSC - 200, 100])
+            pygame.draw.rect(ekran, 'gold', [0, 800, SZEROKOSC - 200, 100], 5)
+            ekran.blit(duza_czcionka.render('Wybierz figure do promocji', True, 'black'), (20, 820))
 
 
 # draw pieces onto board
@@ -74,7 +79,7 @@ def sprawdz_mozliwe_opcje(figury, lokalizacje, tura):
     return lista_wszystkich_ruchow
 
 
-# check king valid moves
+# check king valid ruchy
 def ruchy_krol(pozycja, kolor):
     lista_ruchow = []
     ruchy_roszady = sprawdz_roszade()
@@ -93,7 +98,7 @@ def ruchy_krol(pozycja, kolor):
     return lista_ruchow, ruchy_roszady
 
 
-# check queen valid moves
+# check queen valid ruchy
 def ruchy_hetman(pozycja, kolor):
     lista_ruchow = ruchy_goniec(pozycja, kolor)
     druga_lista = ruchy_wieza(pozycja, kolor)
@@ -102,7 +107,7 @@ def ruchy_hetman(pozycja, kolor):
     return lista_ruchow
 
 
-# check bishop moves
+# check bishop ruchy
 def ruchy_goniec(pozycja, kolor):
     lista_ruchow = []
     if kolor == 'white':
@@ -138,7 +143,7 @@ def ruchy_goniec(pozycja, kolor):
     return lista_ruchow
 
 
-# check rook moves
+# check rook ruchy
 def ruchy_wieza(pozycja, kolor):
     lista_ruchow = []
     if kolor == 'white':
@@ -174,7 +179,7 @@ def ruchy_wieza(pozycja, kolor):
     return lista_ruchow
 
 
-# check valid pawn moves
+# check valid pawn ruchy
 def ruchy_pionek(pozycja, kolor):
     lista_ruchow = []
     if kolor == 'white':
@@ -214,7 +219,7 @@ def ruchy_pionek(pozycja, kolor):
     return lista_ruchow
 
 
-# check valid knight moves
+# check valid knight ruchy
 def ruchy_skoczek(pozycja, kolor):
     lista_ruchow = []
     if kolor == 'white':
@@ -232,7 +237,7 @@ def ruchy_skoczek(pozycja, kolor):
     return lista_ruchow
 
 
-# check for valid moves for just selected piece
+# check for valid ruchy for just selected piece
 def sprawdz_mozliwe_ruchy():
     if kolejnosc < 2:
         lista_opcji = biale_opcje
@@ -242,7 +247,7 @@ def sprawdz_mozliwe_ruchy():
     return mozliwe_opcje
 
 
-# draw valid moves on screen
+# draw valid ruchy on screen
 def pokaz_mozliwe_ruchy(ruchy):
     if kolejnosc < 2:
         kolor = 'red'
@@ -292,9 +297,11 @@ def pokaz_czy_szach():
 
 def pokaz_koniec_gry():
     pygame.draw.rect(ekran, 'black', [200, 200, 400, 70])
-    ekran.blit(czcionka.render(f'{zwyciezca} won the game!', True, 'white'), (210, 210))
-    ekran.blit(czcionka.render(f'Press ENTER to Restart!', True, 'white'), (210, 240))
+    ekran.blit(czcionka.render(f'{zwyciezca} wygrywa!', True, 'white'), (210, 210))
+    ekran.blit(czcionka.render(f'Naciśnij ENTER aby zacząć od nowa!', True, 'white'), (210, 240))
 
+
+# check en passant because people on the internet won't stop bugging me for it
 def sprawdz_bicie_w_przelocie(stare_wspolrzedne, nowe_wspolrzedne):
     if kolejnosc <= 1:
         index = biale_lokalizacja.index(stare_wspolrzedne)
@@ -311,6 +318,8 @@ def sprawdz_bicie_w_przelocie(stare_wspolrzedne, nowe_wspolrzedne):
         wspolrzedne_w_przelocie = (100, 100)
     return wspolrzedne_w_przelocie
 
+
+# add castling
 def sprawdz_roszade():
     # king must not currently be in check, neither the rook nor king has moved previously, nothing between
     # and the king does not pass through or finish on an attacked piece
@@ -384,15 +393,15 @@ def pokaz_roszada(ruchy):
 # add pawn promotion
 def sprawdz_promocje():
     pionek_indexy = []
-    biale_promuj = False
-    czarne_promuj = False
+    biale_promocja = False
+    czarne_promocja = False
     promocja_index = 100
     for i in range(len(biale_figury)):
         if biale_figury[i] == 'pawn':
             pionek_indexy.append(i)
     for i in range(len(pionek_indexy)):
         if biale_lokalizacja[pionek_indexy[i]][1] == 7:
-            biale_promuj = True
+            biale_promocja = True
             promocja_index = pionek_indexy[i]
     pionek_indexy = []
     for i in range(len(czarne_figury)):
@@ -400,14 +409,13 @@ def sprawdz_promocje():
             pionek_indexy.append(i)
     for i in range(len(pionek_indexy)):
         if czarne_lokalizacja[pionek_indexy[i]][1] == 0:
-            czarne_promuj = True
+            czarne_promocja = True
             promocja_index = pionek_indexy[i]
-    return biale_promuj, czarne_promuj, promocja_index
+    return biale_promocja, czarne_promocja, promocja_index
 
 
 def promocja():
     pygame.draw.rect(ekran, 'dark gray', [800, 0, 200, 420])
-    biale_promuj, czarne_promuj, promocja_index = sprawdz_promocje()
     if biale_promuj:
         kolor = 'white'
         for i in range(len(biale_promocja)):
@@ -424,7 +432,6 @@ def promocja():
 
 
 def sprawdz_wybor_promocji():
-    biale_promuj, czarne_promuj, promocja_index = sprawdz_promocje()
     mysz_pozycja = pygame.mouse.get_pos()
     lewy_wcisniety = pygame.mouse.get_pressed()[0]
     x_pozycja = mysz_pozycja[0] // 100
@@ -433,6 +440,7 @@ def sprawdz_wybor_promocji():
         biale_figury[index_promocja] = biale_promocja[y_pozycja]
     elif czarne_promuj and lewy_wcisniety and x_pozycja > 7 and y_pozycja < 4:
         czarne_figury[index_promocja] = czarne_promocja[y_pozycja]
+
 
 # main game loop
 czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
