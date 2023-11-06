@@ -15,13 +15,13 @@ def generuj_plansze():
         pygame.draw.rect(ekran, 'gray', [0, 800, SZEROKOSC, 100])
         pygame.draw.rect(ekran, 'gold', [0, 800, SZEROKOSC, 100], 5)
         pygame.draw.rect(ekran, 'gold', [800, 0, 200, WYSOKOSC], 5)
-        status_tekst = ['White: Select a Piece to Move!', 'White: Select a Destination!',
-                       'Black: Select a Piece to Move!', 'Black: Select a Destination!']
+        status_tekst = ['Białe: Wybierz figurę! ', 'Białe: Wybierz pole!',
+                       'Czarne: Wybierz figurę!', 'Czarne: Wybierz pole!']
         ekran.blit(duza_czcionka.render(status_tekst[kolejnosc], True, 'black'), (20, 820))
         for i in range(9):
             pygame.draw.line(ekran, 'black', (0, 100 * i), (800, 100 * i), 2)
             pygame.draw.line(ekran, 'black', (100 * i, 0), (100 * i, 800), 2)
-        ekran.blit(srednia_czcionka.render('FORFEIT', True, 'black'), (810, 830))
+        ekran.blit(srednia_czcionka.render('PODDAJ', True, 'black'), (810, 830))
 
 
 # draw pieces onto board
@@ -291,9 +291,13 @@ def pokaz_czy_szach():
 
 
 def pokaz_koniec_gry():
+    if zwyciezca == 'black':
+        kolor = 'Czarne'
+    else:
+        kolor = 'Białe'
     pygame.draw.rect(ekran, 'black', [200, 200, 400, 70])
-    ekran.blit(czcionka.render(f'{zwyciezca} won the game!', True, 'white'), (210, 210))
-    ekran.blit(czcionka.render(f'Press ENTER to Restart!', True, 'white'), (210, 240))
+    ekran.blit(czcionka.render(f'{kolor} wygrywają! ', True, 'white'), (210, 210))
+    ekran.blit(czcionka.render(f'Naciśnij ENTER aby zacząć od nowa!', True, 'white'), (210, 240))
 
 def sprawdz_bicie_w_przelocie(stare_wspolrzedne, nowe_wspolrzedne):
     if kolejnosc <= 1:
