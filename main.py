@@ -442,6 +442,7 @@ def sprawdz_wybor_promocji():
 czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
 biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
 uruchom = True
+koniec_gry = False
 while uruchom:
     zegar.tick(fps)
     if licznik < 30:
