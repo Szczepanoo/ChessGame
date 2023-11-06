@@ -377,9 +377,9 @@ def pokaz_roszada(ruchy):
         kolor = 'blue'
     for i in range(len(ruchy)):
         pygame.draw.circle(ekran, kolor, (ruchy[i][0][0] * 100 + 50, ruchy[i][0][1] * 100 + 70), 8)
-        ekran.blit(czcionka.render('king', True, 'black'), (ruchy[i][0][0] * 100 + 30, ruchy[i][0][1] * 100 + 70))
+        ekran.blit(czcionka.render('Król', True, 'black'), (ruchy[i][0][0] * 100 + 30, ruchy[i][0][1] * 100 + 70))
         pygame.draw.circle(ekran, kolor, (ruchy[i][1][0] * 100 + 50, ruchy[i][1][1] * 100 + 70), 8)
-        ekran.blit(czcionka.render('rook', True, 'black'),
+        ekran.blit(czcionka.render('Wieża', True, 'black'),
                    (ruchy[i][1][0] * 100 + 30, ruchy[i][1][1] * 100 + 70))
         pygame.draw.line(ekran, kolor, (ruchy[i][0][0] * 100 + 50, ruchy[i][0][1] * 100 + 70),
                          (ruchy[i][1][0] * 100 + 50, ruchy[i][1][1] * 100 + 70), 2)
