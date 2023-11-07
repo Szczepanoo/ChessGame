@@ -21,9 +21,9 @@ Internetowa aplikacja stworzona jako projekt zaliczeniowy przedmiotu 'Programowa
   * Stworzenie bazy danych
   * Dodanie możliwości utworzenia konta na platformie / zalogowania się
 * Dodanie dodatkowych funkcjonalności:
- * Kastomizacja figur.
- * Zegar szachowy.
- * Chat dla użytkowników. 
+  * Kastomizacja figur.
+  * Zegar szachowy.
+  * Chat dla użytkowników. 
 
 ## Sprint IV
 * Możliwość wyboru trybu gry (PVP/PVE):
