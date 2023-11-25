@@ -1,21 +1,30 @@
 # ChessGame
-## Konieczne funkcjonalności:
-* Logowanie do platformy - możliwość utworzenia rankingu
-* Zaimplementowanie logiki to grania w szachy
-* Utworzenie aplikacji internetowej
-* [Opcjonalne] Możliwość wyboru trybu gry (PVP/PVE)
-
+Internetowa aplikacja stworzona jako projekt zaliczeniowy przedmiotu 'Programowanie z wykorzystaniem metodyk zwinnych'.
 
 ## Sprint I
-* Zaimplementowanie szachownicy oraz figur. 
-* Dodanie logiki części figur.
+* Stworzenie grywalnych szachów pozwalających na lokalne rozegranie partii na jednym komputerze:
+  * Stworzenie interfejsu graficznego. 
+  * Zaimplementowanie logiki dotyczącej podstawowych ruchów poszczególnych figur.
+  * Dodanie zaawansowanych ruchów takich jak: 'Bicie w przelocie' lub 'Roszada'.
 
 ## Sprint II
-* Dodanie logiki pozostałych figur. Dodanie  
-* Dodanie możliwości logowania.
+* Usprawnienie obecnego modelu:
+  * Poprawienie mechanizmu szachowania.
+  * Weryfikacja poprawności pozostałych ruchów. 
+* Umieszczenie gry na stronie internetowej:
+  * Stworzenie strony internetowej
+  * Przesłanie usprawnionego modelu
 
 
 ## Sprint III
-
+* Utworzenie rankingu dla zalogowanych użytkowników:
+  * Stworzenie bazy danych
+  * Dodanie możliwości utworzenia konta na platformie / zalogowania się
+* Dodanie dodatkowych funkcjonalności:
+  * Kastomizacja figur.
+  * Zegar szachowy.
+  * Chat dla użytkowników. 
 
 ## Sprint IV
+* Możliwość wyboru trybu gry (PVP/PVE):
+  * Dodanie sieci neuronowej pozwalającej na rozgrywkę: Gracz vs Komputer
