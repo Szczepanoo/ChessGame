@@ -241,7 +241,6 @@ def sprawdz_mozliwe_ruchy():
     mozliwe_opcje = lista_opcji[wybor]
     return mozliwe_opcje
 
-
 # draw valid moves on screen
 def pokaz_mozliwe_ruchy(ruchy):
     if kolejnosc < 2:
@@ -264,8 +263,13 @@ def pokaz_zbite_figury():
         ekran.blit(biale_male_obraz[index], (925, 5 + 50 * i))
 
 
-# draw a flashing square around king if in check
-def pokaz_czy_szach():
+
+
+
+
+
+#check if any pieces are in check then return szach
+def sprawdz_szach():
     global szach
     szach = False
     if kolejnosc < 2:
@@ -275,9 +279,6 @@ def pokaz_czy_szach():
             for i in range(len(czarne_opcje)):
                 if king_location in czarne_opcje[i]:
                     szach = True
-                    if licznik < 15:
-                        pygame.draw.rect(ekran, 'dark red', [biale_lokalizacja[king_index][0] * 100 + 1,
-                                                             biale_lokalizacja[king_index][1] * 100 + 1, 100, 100], 5)
     else:
         if 'king' in czarne_figury:
             king_index = czarne_figury.index('king')
@@ -285,9 +286,27 @@ def pokaz_czy_szach():
             for i in range(len(biale_opcje)):
                 if king_location in biale_opcje[i]:
                     szach = True
-                    if licznik < 15:
-                        pygame.draw.rect(ekran, 'dark blue', [czarne_lokalizacja[king_index][0] * 100 + 1,
-                                                              czarne_lokalizacja[king_index][1] * 100 + 1, 100, 100], 5)
+
+#draw a flashing square around king if szach = True
+def pokaz_czy_szach():
+    if szach:
+        if licznik < 15:
+            if kolejnosc < 2:
+                king_index = biale_figury.index('king')
+                king_location = biale_lokalizacja[king_index]
+                pygame.draw.rect(ekran, 'dark red', [king_location[0] * 100 + 1, king_location[1] * 100 + 1, 100, 100], 5)
+            else:
+                king_index = czarne_figury.index('king')
+                king_location = czarne_lokalizacja[king_index]
+                pygame.draw.rect(ekran, 'dark blue', [king_location[0] * 100 + 1, king_location[1] * 100 + 1, 100, 100], 5)
+
+
+
+
+
+
+
+
 
 
 def pokaz_koniec_gry():
@@ -438,7 +457,7 @@ def sprawdz_wybor_promocji():
     elif czarne_promuj and lewy_wcisniety and x_pozycja > 7 and y_pozycja < 4:
         czarne_figury[index_promocja] = czarne_promocja[y_pozycja]
 
-# main game loop
+# main game loop -------------------------------------------------------------------------------------------------------
 czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
 biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
 uruchom = True
@@ -453,6 +472,7 @@ while uruchom:
     generuj_plansze()
     generuj_figury()
     pokaz_zbite_figury()
+    sprawdz_szach()
     pokaz_czy_szach()
     if not koniec_gry:
         biale_promuj, czarne_promuj, index_promocja = sprawdz_promocje()
