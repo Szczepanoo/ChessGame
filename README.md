@@ -1,5 +1,5 @@
 # ChessGame
-Internetowa aplikacja stworzona jako projekt zaliczeniowy przedmiotu 'Programowanie z wykorzystaniem metodyk zwinnych'.
+Internetowa aplikacja stworzona jako projekt zaliczeniowy przedmiotu "Programowanie z wykorzystaniem metodyk zwinnych."
 
 ## Sprint I
 * Stworzenie grywalnych szachów pozwalających na lokalne rozegranie partii na jednym komputerze:
@@ -17,6 +17,9 @@ Internetowa aplikacja stworzona jako projekt zaliczeniowy przedmiotu 'Programowa
 
 
 ## Sprint III
+* Usprawnienie obecnego modelu:
+  * Poprawa zasad dotyczących szachowania.
+  * Poprawa zasad dotyczących roszady.
 * Utworzenie rankingu dla zalogowanych użytkowników:
   * Stworzenie bazy danych
   * Dodanie możliwości utworzenia konta na platformie / zalogowania się
