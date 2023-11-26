@@ -55,6 +55,7 @@ def sprawdz_mozliwe_opcje(figury, lokalizacje, tura):
     lista_ruchow = []
     lista_wszystkich_ruchow = []
     ruchy_roszada = []
+
     for i in range((len(figury))):
         lokalizacja = lokalizacje[i]
         figura = figury[i]
@@ -74,10 +75,19 @@ def sprawdz_mozliwe_opcje(figury, lokalizacje, tura):
     return lista_wszystkich_ruchow
 
 
+
 # check king valid moves
 def ruchy_krol(pozycja, kolor):
     lista_ruchow = []
     ruchy_roszady = sprawdz_roszade()
+    if kolejnosc < 2:
+        if 'king' in biale_figury:
+            krol_index = biale_figury.index('king')
+            krol_lokalizacja = biale_lokalizacja[krol_index]
+    else:
+        if 'king' in czarne_figury:
+            krol_index = czarne_figury.index('king')
+            krol_lokalizacja = czarne_lokalizacja[krol_index]
     if kolor == 'white':
         lista_wrogow = czarne_lokalizacja
         lista_przyjaciol = biale_lokalizacja
@@ -88,8 +98,16 @@ def ruchy_krol(pozycja, kolor):
     cele = [(1, 0), (1, 1), (1, -1), (-1, 0), (-1, 1), (-1, -1), (0, 1), (0, -1)]
     for i in range(8):
         cel = (pozycja[0] + cele[i][0], pozycja[1] + cele[i][1])
+        krol_w_zasiegu = False
         if cel not in lista_przyjaciol and 0 <= cel[0] <= 7 and 0 <= cel[1] <= 7:
-            lista_ruchow.append(cel)
+            for i in range(8):
+                cel2 = (cel[0] + cele[i][0], cel[1] + cele[i][1])
+                if cel2 == krol_lokalizacja and 0 <= cel2[0] <= 7 and 0 <= cel2[1] <= 7:
+                    krol_w_zasiegu = True
+                    break
+            if not krol_w_zasiegu:
+                lista_ruchow.append(cel)
+
     return lista_ruchow, ruchy_roszady
 
 
@@ -274,18 +292,20 @@ def sprawdz_szach():
     szach = False
     if kolejnosc < 2:
         if 'king' in biale_figury:
-            king_index = biale_figury.index('king')
-            king_location = biale_lokalizacja[king_index]
+            krol_index = biale_figury.index('king')
+            krol_lokalizacja = biale_lokalizacja[krol_index]
             for i in range(len(czarne_opcje)):
-                if king_location in czarne_opcje[i]:
+                if krol_lokalizacja in czarne_opcje[i]:
                     szach = True
+                    biale_ruch[krol_index] = True
     else:
         if 'king' in czarne_figury:
-            king_index = czarne_figury.index('king')
-            king_location = czarne_lokalizacja[king_index]
+            krol_index = czarne_figury.index('king')
+            krol_lokalizacja = czarne_lokalizacja[krol_index]
             for i in range(len(biale_opcje)):
-                if king_location in biale_opcje[i]:
+                if krol_lokalizacja in biale_opcje[i]:
                     szach = True
+                    czarne_ruch[krol_index] = True
 
 #draw a flashing square around king if szach = True
 def pokaz_czy_szach():
@@ -497,7 +517,7 @@ while uruchom:
                     zwyciezca = 'black'
                 if klikniecie_wspolrzedna in biale_lokalizacja:
                     wybor = biale_lokalizacja.index(klikniecie_wspolrzedna)
-                    # check what piece is selected, so you can only draw castling ruchy if king is selected
+                    # check what piece is selected, so you can only draw castling moves if king is selected
                     wybrany_element = biale_figury[wybor]
                     if kolejnosc == 0:
                         kolejnosc = 1
