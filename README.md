@@ -12,17 +12,18 @@ Internetowa aplikacja stworzona jako projekt zaliczeniowy przedmiotu "Programowa
   * Poprawienie mechanizmu szachowania.
   * Weryfikacja poprawności pozostałych ruchów. 
 * Umieszczenie gry na stronie internetowej:
-  * Stworzenie strony internetowej
-  * Przesłanie usprawnionego modelu
+  * Stworzenie strony internetowej.
+  * Przesłanie usprawnionego modelu.
 
 
 ## Sprint III
+* Utworzenie Trello (lub innej aplikacji) do monitorowania postępu.
 * Usprawnienie obecnego modelu:
   * Poprawa zasad dotyczących szachowania.
   * Poprawa zasad dotyczących roszady.
 * Utworzenie rankingu dla zalogowanych użytkowników:
-  * Stworzenie bazy danych
-  * Dodanie możliwości utworzenia konta na platformie / zalogowania się
+  * Stworzenie bazy danych.
+  * Dodanie możliwości utworzenia konta na platformie / zalogowania się.
 * Dodanie dodatkowych funkcjonalności:
   * Kastomizacja figur.
   * Zegar szachowy.
@@ -30,4 +31,4 @@ Internetowa aplikacja stworzona jako projekt zaliczeniowy przedmiotu "Programowa
 
 ## Sprint IV
 * Możliwość wyboru trybu gry (PVP/PVE):
-  * Dodanie sieci neuronowej pozwalającej na rozgrywkę: Gracz vs Komputer
+  * Dodanie sieci neuronowej pozwalającej na rozgrywkę: Gracz vs Komputer.
