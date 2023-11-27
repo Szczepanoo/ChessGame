@@ -72,8 +72,84 @@ def sprawdz_mozliwe_opcje(figury, lokalizacje, tura):
         elif figura == 'king':
             lista_ruchow, ruchy_roszada = ruchy_krol(lokalizacja, tura)
         lista_wszystkich_ruchow.append(lista_ruchow)
+
+    '''# Zapobieganie zbicia króla
+    biale_krol_index = biale_figury.index('king')
+    biale_krol_lokalizacja = biale_lokalizacja[biale_krol_index]
+    czarne_krol_index = czarne_figury.index('king')
+    czarne_krol_lokalizacja = czarne_lokalizacja[czarne_krol_index]
+
+    # Usunięcie pozycji króla jeśli jest w szachu
+    for sublist in lista_wszystkich_ruchow:
+        while biale_krol_lokalizacja in sublist:
+            #biale_szach = True
+            szach = True
+            sublist.remove(biale_krol_lokalizacja)
+            biale_ruch[biale_krol_index] = True
+    for sublist2 in lista_wszystkich_ruchow:
+        while czarne_krol_lokalizacja in sublist2:
+            #czarne_szach = True
+            szach = True
+            sublist2.remove(czarne_krol_lokalizacja)
+            czarne_ruch[czarne_krol_index] = True
+    print(szach)
+    #print(biale_szach, czarne_szach)'''
+    return sprawdz_szach(lista_wszystkich_ruchow)
+
+
+# Zapobieganie zbicia króla
+# Usunięcie pozycji króla jeśli jest w szachu
+def sprawdz_szach(lista_wszystkich_ruchow):
+    global szach, biale_szach, czarne_szach
+    szach = False
+    biale_szach = False
+    czarne_szach = False
+
+    biale_krol_index = biale_figury.index('king')
+    biale_krol_lokalizacja = biale_lokalizacja[biale_krol_index]
+    czarne_krol_index = czarne_figury.index('king')
+    czarne_krol_lokalizacja = czarne_lokalizacja[czarne_krol_index]
+
+    for sublist in lista_wszystkich_ruchow:
+        while biale_krol_lokalizacja in sublist:
+            biale_szach = True
+            szach = True
+            sublist.remove(biale_krol_lokalizacja)
+            #biale_ruch[biale_krol_index] = True
+    for sublist2 in lista_wszystkich_ruchow:
+        while czarne_krol_lokalizacja in sublist2:
+            czarne_szach = True
+            szach = True
+            sublist2.remove(czarne_krol_lokalizacja)
+            #czarne_ruch[czarne_krol_index] = True
+    print(biale_szach, czarne_szach)
     return lista_wszystkich_ruchow
 
+
+
+
+#if biale_szach show red square around king in biale_lokalizacja list and vice versa
+def pokaz_czy_szach():
+    if licznik < 15:
+        if biale_szach:
+            king_index = biale_figury.index('king')
+            king_location = biale_lokalizacja[king_index]
+            pygame.draw.rect(ekran, 'dark red', [king_location[0] * 100 + 1, king_location[1] * 100 + 1, 100, 100], 5)
+        elif czarne_szach:
+            king_index = czarne_figury.index('king')
+            king_location = czarne_lokalizacja[king_index]
+            pygame.draw.rect(ekran, 'dark blue', [king_location[0] * 100 + 1, king_location[1] * 100 + 1, 100, 100], 5)
+'''
+    if szach:
+        if licznik < 15:
+            if kolejnosc < 2:
+                king_index = biale_figury.index('king')
+                king_location = biale_lokalizacja[king_index]
+                pygame.draw.rect(ekran, 'dark red', [king_location[0] * 100 + 1, king_location[1] * 100 + 1, 100, 100], 5)
+            else:
+                king_index = czarne_figury.index('king')
+                king_location = czarne_lokalizacja[king_index]
+                pygame.draw.rect(ekran, 'dark blue', [king_location[0] * 100 + 1, king_location[1] * 100 + 1, 100, 100], 5)'''
 
 
 # check king valid moves
@@ -107,7 +183,6 @@ def ruchy_krol(pozycja, kolor):
                     break
             if not krol_w_zasiegu:
                 lista_ruchow.append(cel)
-
     return lista_ruchow, ruchy_roszady
 
 
@@ -259,6 +334,7 @@ def sprawdz_mozliwe_ruchy():
     mozliwe_opcje = lista_opcji[wybor]
     return mozliwe_opcje
 
+
 # draw valid moves on screen
 def pokaz_mozliwe_ruchy(ruchy):
     if kolejnosc < 2:
@@ -281,54 +357,7 @@ def pokaz_zbite_figury():
         ekran.blit(biale_male_obraz[index], (925, 5 + 50 * i))
 
 
-
-
-
-
-
-#check if any pieces are in check then return szach
-def sprawdz_szach():
-    global szach
-    szach = False
-    if kolejnosc < 2:
-        if 'king' in biale_figury:
-            krol_index = biale_figury.index('king')
-            krol_lokalizacja = biale_lokalizacja[krol_index]
-            for i in range(len(czarne_opcje)):
-                if krol_lokalizacja in czarne_opcje[i]:
-                    szach = True
-                    biale_ruch[krol_index] = True
-    else:
-        if 'king' in czarne_figury:
-            krol_index = czarne_figury.index('king')
-            krol_lokalizacja = czarne_lokalizacja[krol_index]
-            for i in range(len(biale_opcje)):
-                if krol_lokalizacja in biale_opcje[i]:
-                    szach = True
-                    czarne_ruch[krol_index] = True
-
-#draw a flashing square around king if szach = True
-def pokaz_czy_szach():
-    if szach:
-        if licznik < 15:
-            if kolejnosc < 2:
-                king_index = biale_figury.index('king')
-                king_location = biale_lokalizacja[king_index]
-                pygame.draw.rect(ekran, 'dark red', [king_location[0] * 100 + 1, king_location[1] * 100 + 1, 100, 100], 5)
-            else:
-                king_index = czarne_figury.index('king')
-                king_location = czarne_lokalizacja[king_index]
-                pygame.draw.rect(ekran, 'dark blue', [king_location[0] * 100 + 1, king_location[1] * 100 + 1, 100, 100], 5)
-
-
-
-
-
-
-
-
-
-
+# kończy grę
 def pokaz_koniec_gry():
     if zwyciezca == 'black':
         kolor = 'Czarne'
@@ -337,6 +366,7 @@ def pokaz_koniec_gry():
     pygame.draw.rect(ekran, 'black', [200, 200, 400, 70])
     ekran.blit(czcionka.render(f'{kolor} wygrywają! ', True, 'white'), (210, 210))
     ekran.blit(czcionka.render(f'Naciśnij ENTER aby zacząć od nowa!', True, 'white'), (210, 240))
+
 
 def sprawdz_bicie_w_przelocie(stare_wspolrzedne, nowe_wspolrzedne):
     if kolejnosc <= 1:
@@ -492,7 +522,6 @@ while uruchom:
     generuj_plansze()
     generuj_figury()
     pokaz_zbite_figury()
-    sprawdz_szach()
     pokaz_czy_szach()
     if not koniec_gry:
         biale_promuj, czarne_promuj, index_promocja = sprawdz_promocje()
