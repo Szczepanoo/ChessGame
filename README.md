@@ -21,14 +21,14 @@ Internetowa aplikacja stworzona jako projekt zaliczeniowy przedmiotu "Programowa
 * Usprawnienie obecnego modelu:
   * Poprawa zasad dotyczących szachowania.
   * Poprawa zasad dotyczących roszady.
-* Utworzenie rankingu dla zalogowanych użytkowników:
-  * Stworzenie bazy danych.
-  * Dodanie możliwości utworzenia konta na platformie / zalogowania się.
 * Dodanie dodatkowych funkcjonalności:
   * Kastomizacja figur.
   * Zegar szachowy.
   * Chat dla użytkowników. 
 
 ## Sprint IV
+* Utworzenie rankingu dla zalogowanych użytkowników:
+  * Stworzenie bazy danych.
+  * Dodanie możliwości utworzenia konta na platformie / zalogowania się.
 * Możliwość wyboru trybu gry (PVP/PVE):
   * Dodanie sieci neuronowej pozwalającej na rozgrywkę: Gracz vs Komputer.
