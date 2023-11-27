@@ -72,28 +72,6 @@ def sprawdz_mozliwe_opcje(figury, lokalizacje, tura):
         elif figura == 'king':
             lista_ruchow, ruchy_roszada = ruchy_krol(lokalizacja, tura)
         lista_wszystkich_ruchow.append(lista_ruchow)
-
-    '''# Zapobieganie zbicia króla
-    biale_krol_index = biale_figury.index('king')
-    biale_krol_lokalizacja = biale_lokalizacja[biale_krol_index]
-    czarne_krol_index = czarne_figury.index('king')
-    czarne_krol_lokalizacja = czarne_lokalizacja[czarne_krol_index]
-
-    # Usunięcie pozycji króla jeśli jest w szachu
-    for sublist in lista_wszystkich_ruchow:
-        while biale_krol_lokalizacja in sublist:
-            #biale_szach = True
-            szach = True
-            sublist.remove(biale_krol_lokalizacja)
-            biale_ruch[biale_krol_index] = True
-    for sublist2 in lista_wszystkich_ruchow:
-        while czarne_krol_lokalizacja in sublist2:
-            #czarne_szach = True
-            szach = True
-            sublist2.remove(czarne_krol_lokalizacja)
-            czarne_ruch[czarne_krol_index] = True
-    print(szach)
-    #print(biale_szach, czarne_szach)'''
     return sprawdz_szach(lista_wszystkich_ruchow)
 
 
