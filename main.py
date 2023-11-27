@@ -79,36 +79,39 @@ def sprawdz_mozliwe_opcje(figury, lokalizacje, tura):
 # Usunięcie pozycji króla jeśli jest w szachu
 def sprawdz_szach(lista_wszystkich_ruchow):
     global szach, biale_szach, czarne_szach
-    szach = False
-    biale_szach = False
-    czarne_szach = False
-
+    biale_licznik = 0
+    czarne_licznik = 0
     biale_krol_index = biale_figury.index('king')
     biale_krol_lokalizacja = biale_lokalizacja[biale_krol_index]
     czarne_krol_index = czarne_figury.index('king')
     czarne_krol_lokalizacja = czarne_lokalizacja[czarne_krol_index]
 
-    for sublist in lista_wszystkich_ruchow:
-        while biale_krol_lokalizacja in sublist:
-            biale_szach = True
-            szach = True
-            sublist.remove(biale_krol_lokalizacja)
-            #biale_ruch[biale_krol_index] = True
-    for sublist2 in lista_wszystkich_ruchow:
-        while czarne_krol_lokalizacja in sublist2:
-            czarne_szach = True
-            szach = True
-            sublist2.remove(czarne_krol_lokalizacja)
-            #czarne_ruch[czarne_krol_index] = True
-    print(biale_szach, czarne_szach)
+    if kolejnosc < 2:
+        for sublist in lista_wszystkich_ruchow:
+            while biale_krol_lokalizacja in sublist:
+                sublist.remove(biale_krol_lokalizacja)
+                biale_licznik += 1
+            if biale_licznik != 0:
+                biale_szach = True
+            else:
+                biale_szach = False
+    else:
+        for sublist2 in lista_wszystkich_ruchow:
+            while czarne_krol_lokalizacja in sublist2:
+                sublist2.remove(czarne_krol_lokalizacja)
+            if czarne_licznik != 0:
+                czarne_szach = True
+            else:
+                czarne_szach = False
+    if not czarne_szach and not biale_szach:
+        szach = False
+    print(f"Szach: {szach}, białe: {biale_szach}, czarne: {czarne_szach}") # temp print
     return lista_wszystkich_ruchow
-
-
 
 
 #if biale_szach show red square around king in biale_lokalizacja list and vice versa
 def pokaz_czy_szach():
-    if licznik < 15:
+    '''if licznik < 15:
         if biale_szach:
             king_index = biale_figury.index('king')
             king_location = biale_lokalizacja[king_index]
@@ -116,8 +119,8 @@ def pokaz_czy_szach():
         elif czarne_szach:
             king_index = czarne_figury.index('king')
             king_location = czarne_lokalizacja[king_index]
-            pygame.draw.rect(ekran, 'dark blue', [king_location[0] * 100 + 1, king_location[1] * 100 + 1, 100, 100], 5)
-'''
+            pygame.draw.rect(ekran, 'dark blue', [king_location[0] * 100 + 1, king_location[1] * 100 + 1, 100, 100], 5)'''
+
     if szach:
         if licznik < 15:
             if kolejnosc < 2:
@@ -127,7 +130,7 @@ def pokaz_czy_szach():
             else:
                 king_index = czarne_figury.index('king')
                 king_location = czarne_lokalizacja[king_index]
-                pygame.draw.rect(ekran, 'dark blue', [king_location[0] * 100 + 1, king_location[1] * 100 + 1, 100, 100], 5)'''
+                pygame.draw.rect(ekran, 'dark blue', [king_location[0] * 100 + 1, king_location[1] * 100 + 1, 100, 100], 5)
 
 
 # check king valid moves
