@@ -49,6 +49,40 @@ def generuj_figury():
                                                  100, 100], 2)
 
 
+def ruchy_w_szachu(figury, lokalizacje, tura, mozliwe_ruchy):
+    global biale_figury_shachujace, biale_figury_shachujace_lokalizacje, czarne_figury_shachujace, czarne_figury_shachujace_lokalizacje
+    biale_figury_shachujace = []
+    biale_figury_shachujace_lokalizacje = []
+    czarne_figury_shachujace = []
+    czarne_figury_shachujace_lokalizacje = []
+
+    if tura == 'white':
+        krol_index = biale_figury.index('king')
+        krol_lokalizacja = biale_lokalizacja[krol_index]
+        for i in range((len(figury))):
+            lokalizacja = lokalizacje[i]
+            figura = figury[i]
+            if krol_lokalizacja in mozliwe_ruchy[i]:
+                biale_figury_shachujace.append(figura)
+                biale_figury_shachujace_lokalizacje.append(lokalizacja)
+    else:
+        krol_index = czarne_figury.index('king')
+        krol_lokalizacja = czarne_lokalizacja[krol_index]
+        for i in range((len(figury))):
+            lokalizacja = lokalizacje[i]
+            figura = figury[i]
+            if krol_lokalizacja in mozliwe_ruchy[i]:
+                czarne_figury_shachujace.append(figura)
+                czarne_figury_shachujace_lokalizacje.append(lokalizacja)
+
+    '''for i in range((len(figury))):
+        lokalizacja = lokalizacje[i]
+        figura = figury[i]
+        if krol_lokalizacja in mozliwe_ruchy[i]:
+            figury_shachujace.append(figura)
+            figury_shachujace_lokalizacje.append(lokalizacja)'''
+
+
 # function to check all pieces valid options on board
 def sprawdz_mozliwe_opcje(figury, lokalizacje, tura):
     global ruchy_roszada
@@ -72,12 +106,12 @@ def sprawdz_mozliwe_opcje(figury, lokalizacje, tura):
         elif figura == 'king':
             lista_ruchow, ruchy_roszada = ruchy_krol(lokalizacja, tura)
         lista_wszystkich_ruchow.append(lista_ruchow)
-    return sprawdz_szach(lista_wszystkich_ruchow)
+    ruchy_szach = ruchy_w_szachu(figury, lokalizacje, tura, lista_wszystkich_ruchow)
+    print(ruchy_szach)
+    return lista_wszystkich_ruchow
 
 
-# Zapobieganie zbicia króla
-# Usunięcie pozycji króla jeśli jest w szachu
-def sprawdz_szach(lista_wszystkich_ruchow):
+def sprawdz_szach(biale_opcje, czarne_opcje):
     global szach, biale_szach, czarne_szach
     szach = False
     biale_szach = False
@@ -88,22 +122,18 @@ def sprawdz_szach(lista_wszystkich_ruchow):
     czarne_krol_index = czarne_figury.index('king')
     czarne_krol_lokalizacja = czarne_lokalizacja[czarne_krol_index]
 
-    for sublist in lista_wszystkich_ruchow:
+    for sublist in czarne_opcje:
         while biale_krol_lokalizacja in sublist:
             biale_szach = True
             szach = True
             sublist.remove(biale_krol_lokalizacja)
-            #biale_ruch[biale_krol_index] = True
-    for sublist2 in lista_wszystkich_ruchow:
+            biale_ruch[biale_krol_index] = True
+    for sublist2 in biale_opcje:
         while czarne_krol_lokalizacja in sublist2:
             czarne_szach = True
             szach = True
             sublist2.remove(czarne_krol_lokalizacja)
-            #czarne_ruch[czarne_krol_index] = True
-    print(biale_szach, czarne_szach)
-    return lista_wszystkich_ruchow
-
-
+            czarne_ruch[czarne_krol_index] = True
 
 
 #if biale_szach show red square around king in biale_lokalizacja list and vice versa
@@ -117,17 +147,6 @@ def pokaz_czy_szach():
             king_index = czarne_figury.index('king')
             king_location = czarne_lokalizacja[king_index]
             pygame.draw.rect(ekran, 'dark blue', [king_location[0] * 100 + 1, king_location[1] * 100 + 1, 100, 100], 5)
-'''
-    if szach:
-        if licznik < 15:
-            if kolejnosc < 2:
-                king_index = biale_figury.index('king')
-                king_location = biale_lokalizacja[king_index]
-                pygame.draw.rect(ekran, 'dark red', [king_location[0] * 100 + 1, king_location[1] * 100 + 1, 100, 100], 5)
-            else:
-                king_index = czarne_figury.index('king')
-                king_location = czarne_lokalizacja[king_index]
-                pygame.draw.rect(ekran, 'dark blue', [king_location[0] * 100 + 1, king_location[1] * 100 + 1, 100, 100], 5)'''
 
 
 # check king valid moves
@@ -362,6 +381,7 @@ def sprawdz_bicie_w_przelocie(stare_wspolrzedne, nowe_wspolrzedne):
         wspolrzedne_w_przelocie = (100, 100)
     return wspolrzedne_w_przelocie
 
+
 def sprawdz_roszade():
     # king must not currently be in check, neither the rook nor king has moved previously, nothing between
     # and the king does not pass through or finish on an attacked piece
@@ -549,6 +569,7 @@ while uruchom:
                         czarne_ruch.pop(czarne_figura)
                     czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
                     biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
+                    sprawdz_szach(biale_opcje, czarne_opcje)
                     kolejnosc = 2
                     wybor = 100
                     dostepne_ruchy = []
@@ -566,6 +587,7 @@ while uruchom:
                             biale_lokalizacja[wieza_index] = ruchy_roszada[q][1]
                             czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
                             biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
+                            sprawdz_szach(biale_opcje, czarne_opcje)
                             kolejnosc = 2
                             wybor = 100
                             dostepne_ruchy = []
@@ -598,6 +620,7 @@ while uruchom:
                         biale_ruch.pop(biale_figura)
                     czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
                     biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
+                    sprawdz_szach(biale_opcje, czarne_opcje)
                     kolejnosc = 0
                     wybor = 100
                     dostepne_ruchy = []
@@ -615,6 +638,7 @@ while uruchom:
                             czarne_lokalizacja[wieza_index] = ruchy_roszada[q][1]
                             czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
                             biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
+                            sprawdz_szach(biale_opcje, czarne_opcje)
                             kolejnosc = 0
                             wybor = 100
                             dostepne_ruchy = []
