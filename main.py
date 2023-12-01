@@ -81,7 +81,7 @@ def pokaz_koniec_gry():
 # check king valid moves
 def ruchy_krol(pozycja, kolor):
     lista_ruchow = []
-    ruchy_roszady = sprawdz_roszade()
+    ruchy_roszady = sprawdz_roszade(kolor)
     if kolor == 'white':
         lista_przyjaciol = biale_lokalizacja
         pozycja_krola = czarne_lokalizacja[czarne_figury.index('king')]
@@ -314,7 +314,6 @@ def sprawdz_szach(biale_opcje, czarne_opcje):
     szach = False
     biale_szach = False
     czarne_szach = False
-    i = 0
     biale_krol_index = biale_figury.index('king')
     biale_krol_lokalizacja = biale_lokalizacja[biale_krol_index]
     czarne_krol_index = czarne_figury.index('king')
@@ -326,18 +325,12 @@ def sprawdz_szach(biale_opcje, czarne_opcje):
             szach = True
             sublist.remove(biale_krol_lokalizacja)
             biale_ruch[biale_krol_index] = True
-            while i < 1000:
-                print("biale ruszone")
-                i += 1
     for sublist2 in biale_opcje:
         if czarne_krol_lokalizacja in sublist2:
             czarne_szach = True
             szach = True
             sublist2.remove(czarne_krol_lokalizacja)
             czarne_ruch[czarne_krol_index] = True
-            while i < 1000:
-                print("czarne ruszone")
-                i += 1
 #if biale_szach show red square around king in biale_lokalizacja list and vice versa
 def pokaz_czy_szach():
     if licznik < 15:
@@ -566,7 +559,7 @@ def sprawdz_bicie_w_przelocie(stare_wspolrzedne, nowe_wspolrzedne):
     else:
         wspolrzedne_w_przelocie = (100, 100)
     return wspolrzedne_w_przelocie
-def sprawdz_roszade():
+def sprawdz_roszade(kolor):
     # king must not currently be in check, neither the rook nor king has moved previously, nothing between
     # and the king does not pass through or finish on an attacked piece
     ruchy_roszady = []  # store each valid castle move as [((king_coords), (castle_coords))]
@@ -574,7 +567,7 @@ def sprawdz_roszade():
     wieza_lokalizacje = []
     krol_index = 0
     krol_pozycja = (0, 0)
-    if kolejnosc > 1:
+    if kolor == 'white':
         for i in range(len(biale_figury)):
             if biale_figury[i] == 'rook':
                 wieza_indexy.append(biale_ruch[i])
@@ -582,7 +575,7 @@ def sprawdz_roszade():
             if biale_figury[i] == 'king':
                 krol_index = i
                 krol_pozycja = biale_lokalizacja[i]
-        if not biale_ruch[krol_index] and False in wieza_indexy and not szach:
+        if not biale_ruch[krol_index] and False in wieza_indexy and not biale_szach:
             for i in range(len(wieza_indexy)):
                 roszada = True
                 if wieza_lokalizacje[i][0] > krol_pozycja[0]:
@@ -604,7 +597,7 @@ def sprawdz_roszade():
             if czarne_figury[i] == 'king':
                 krol_index = i
                 krol_pozycja = czarne_lokalizacja[i]
-        if not czarne_ruch[krol_index] and False in wieza_indexy and not szach:
+        if not czarne_ruch[krol_index] and False in wieza_indexy and not czarne_szach:
             for i in range(len(wieza_indexy)):
                 roszada = True
                 if wieza_lokalizacje[i][0] > krol_pozycja[0]:
