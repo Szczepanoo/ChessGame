@@ -82,18 +82,12 @@ def pokaz_koniec_gry():
 def ruchy_krol(pozycja, kolor):
     lista_ruchow = []
     ruchy_roszady = sprawdz_roszade()
-    if kolejnosc < 2:
-        if 'king' in biale_figury:
-            krol_index = biale_figury.index('king')
-            krol_lokalizacja = biale_lokalizacja[krol_index]
-    else:
-        if 'king' in czarne_figury:
-            krol_index = czarne_figury.index('king')
-            krol_lokalizacja = czarne_lokalizacja[krol_index]
     if kolor == 'white':
         lista_przyjaciol = biale_lokalizacja
+        pozycja_krola = czarne_lokalizacja[czarne_figury.index('king')]
     else:
         lista_przyjaciol = czarne_lokalizacja
+        pozycja_krola = biale_lokalizacja[biale_figury.index('king')]
     # 8 squares to check for kings, they can go one square any direction
     cele = [(1, 0), (1, 1), (1, -1), (-1, 0), (-1, 1), (-1, -1), (0, 1), (0, -1)]
     for i in range(8):
@@ -103,7 +97,7 @@ def ruchy_krol(pozycja, kolor):
             #król nie może stać obok króla
             for i in range(8):
                 cel2 = (cel[0] + cele[i][0], cel[1] + cele[i][1])
-                if cel2 == krol_lokalizacja and 0 <= cel2[0] <= 7 and 0 <= cel2[1] <= 7:
+                if cel2 == pozycja_krola and 0 <= cel2[0] <= 7 and 0 <= cel2[1] <= 7:
                     krol_w_zasiegu = True
                     break
             if not krol_w_zasiegu:
@@ -259,9 +253,7 @@ def sprawdz_mozliwe_opcje(figury, lokalizacje, tura):
     else:
         szachowane_pola = ruchy_w_szachu(biale_figury, biale_lokalizacja, 'white')  # pozycja figur oraz ścieżke do króla
         print(f"sp white {szachowane_pola}")
-        print(tura)
     for i in range((len(figury))):
-        #ostateczna_lista_ruchow = []
         lokalizacja = lokalizacje[i]
         figura = figury[i]
         if figura == 'pawn':
@@ -275,41 +267,37 @@ def sprawdz_mozliwe_opcje(figury, lokalizacje, tura):
         elif figura == 'queen':
             lista_ruchow = ruchy_hetman(lokalizacja, tura)
         elif figura == 'king':
-            lista_ruchow, ruchy_roszada = ruchy_krol(lokalizacja, tura)
-        lista_wszystkich_ruchow.append(lista_ruchow)
+            #lista_ruchow, ruchy_roszada = ruchy_krol(lokalizacja, tura)
+            lista_ruchow = []
 
-        """if szachowane_pola: # jeśli nie puste
-            if szachowane_pola[i] == []:
-                lista_wszystkich_ruchow.append([])
-            else:
-                for pole in szachowane_pola[i]:
-                    if pole in lista_ruchow:
-                        ostateczna_lista_ruchow.append(pole)
-                lista_wszystkich_ruchow.append(ostateczna_lista_ruchow)
-        else:
-            lista_wszystkich_ruchow.append(lista_ruchow)"""
-
-    if szachowane_pola:  # jeśli nie puste
-        temp_wszystkie_ruchy = []
-        for pole in szachowane_pola: #pole- pole na które trzeba stanąć żeby zablokować szach
+        if szachowane_pola: # jeśli nie puste
             ostateczna_lista_ruchow = []
-            for lista_ruchow in lista_wszystkich_ruchow: #lista_ruchow- wszystkie możliwe ruchy dla konkretnej figury
-                for ruch in lista_ruchow: #ruch- jeden możliwy ruch konkretnej figury
-                    if pole == ruch:
-                        ostateczna_lista_ruchow.append(pole)
-                temp_wszystkie_ruchy.append(ostateczna_lista_ruchow)
-        return temp_wszystkie_ruchy
+            for ruch in lista_ruchow:
+                if ruch in szachowane_pola:
+                    ostateczna_lista_ruchow.append(ruch)
+            lista_wszystkich_ruchow.append(ostateczna_lista_ruchow)
+        else:
+            lista_wszystkich_ruchow.append(lista_ruchow)
 
-
+    #poniższa część kodu zapobiega ruchowi króla w szach
+    ruchy_krola = []
+    figura_index = figury.index('king')
+    lokalizacja = lokalizacje[figura_index]
+    lista_ruchow, ruchy_roszada = ruchy_krol(lokalizacja, tura)
+    print(f"roszada {tura} {ruchy_roszada}")
+    for ruch in lista_ruchow:
+        if ruch not in szachowane_pola:
+            ruchy_krola.append(ruch)
+    lista_wszystkich_ruchow[figura_index] = ruchy_krola
 
     print(f"lws {tura} {lista_wszystkich_ruchow}")
     return lista_wszystkich_ruchow
 # check for valid moves for just selected piece
 def sprawdz_mozliwe_ruchy():
     if kolejnosc < 2:
-        lista_opcji = biale_opcje
+        lista_opcji = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
     else:
-        lista_opcji = czarne_opcje
+        lista_opcji = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
     mozliwe_opcje = lista_opcji[wybor]
     return mozliwe_opcje
 # draw valid moves on screen
@@ -326,24 +314,30 @@ def sprawdz_szach(biale_opcje, czarne_opcje):
     szach = False
     biale_szach = False
     czarne_szach = False
-
+    i = 0
     biale_krol_index = biale_figury.index('king')
     biale_krol_lokalizacja = biale_lokalizacja[biale_krol_index]
     czarne_krol_index = czarne_figury.index('king')
     czarne_krol_lokalizacja = czarne_lokalizacja[czarne_krol_index]
 
     for sublist in czarne_opcje:
-        while biale_krol_lokalizacja in sublist:
+        if biale_krol_lokalizacja in sublist:
             biale_szach = True
             szach = True
             sublist.remove(biale_krol_lokalizacja)
             biale_ruch[biale_krol_index] = True
+            while i < 1000:
+                print("biale ruszone")
+                i += 1
     for sublist2 in biale_opcje:
-        while czarne_krol_lokalizacja in sublist2:
+        if czarne_krol_lokalizacja in sublist2:
             czarne_szach = True
             szach = True
             sublist2.remove(czarne_krol_lokalizacja)
             czarne_ruch[czarne_krol_index] = True
+            while i < 1000:
+                print("czarne ruszone")
+                i += 1
 #if biale_szach show red square around king in biale_lokalizacja list and vice versa
 def pokaz_czy_szach():
     if licznik < 15:
@@ -369,7 +363,6 @@ def pokaz_czy_szach():
 def ruchy_w_szachu(figury, lokalizacje, tura):
     lista_ruchow = []
     lista_wszystkich_ruchow = []
-
     if biale_szach:
         pozycja_krola = biale_lokalizacja[biale_figury.index('king')]
         tura = 'black'
@@ -378,6 +371,7 @@ def ruchy_w_szachu(figury, lokalizacje, tura):
         tura = 'white'
     else:
         return lista_wszystkich_ruchow
+
     for i in range((len(figury))):
         lokalizacja = lokalizacje[i]
         figura = figury[i]
@@ -391,26 +385,28 @@ def ruchy_w_szachu(figury, lokalizacje, tura):
             lista_ruchow = ruchy_goniec_w_szachu(lokalizacja, tura)
         elif figura == 'queen':
             lista_ruchow = ruchy_hetman_w_szachu(lokalizacja, tura)
-        elif figura == 'king':
-            lista_ruchow = ruchy_krol_w_szachu(lokalizacja, tura, lista_wszystkich_ruchow)
-        for ruch in lista_ruchow:
-            if ruch != pozycja_krola:
-                lista_wszystkich_ruchow.append(ruch)
+        '''elif figura == 'king':
+            lista_ruchow = ruchy_krol_w_szachu(lokalizacja, tura, lista_wszystkich_ruchow)'''
+        lista_wszystkich_ruchow.append(lista_ruchow)
+
+    temp_wszystkie_ruchy = []
+    for i in range((len(figury))):  # mozna sie tylko ruszyc w miejsca szachowane, przeksztalca listy w jedna
+        if lista_wszystkich_ruchow[i]:
+            for ruch in lista_wszystkich_ruchow[i]:
+                if ruch not in temp_wszystkie_ruchy and ruch != pozycja_krola:
+                    temp_wszystkie_ruchy.append(ruch)
+    if temp_wszystkie_ruchy:
+        return temp_wszystkie_ruchy
     return lista_wszystkich_ruchow
-def ruchy_krol_w_szachu(pozycja, kolor, szachowane_pola):
+def ruchy_krol_w_szachu(pozycja, kolor, szachowane_pola): #dopracować system uciekania przed szachem
     lista_ruchow = []
-    if kolejnosc < 2:
-        if 'king' in biale_figury:
-            krol_index = biale_figury.index('king')
-            krol_lokalizacja = biale_lokalizacja[krol_index]
-    else:
-        if 'king' in czarne_figury:
-            krol_index = czarne_figury.index('king')
-            krol_lokalizacja = czarne_lokalizacja[krol_index]
+    print(f"krol {szachowane_pola}")
     if kolor == 'white':
         lista_przyjaciol = biale_lokalizacja
+        pozycja_krola = czarne_lokalizacja[czarne_figury.index('king')]
     else:
         lista_przyjaciol = czarne_lokalizacja
+        pozycja_krola = biale_lokalizacja[biale_figury.index('king')]
     # 8 squares to check for kings, they can go one square any direction
     cele = [(1, 0), (1, 1), (1, -1), (-1, 0), (-1, 1), (-1, -1), (0, 1), (0, -1)]
     for i in range(8):
@@ -420,7 +416,7 @@ def ruchy_krol_w_szachu(pozycja, kolor, szachowane_pola):
             #król nie może stać obok króla
             for i in range(8):
                 cel2 = (cel[0] + cele[i][0], cel[1] + cele[i][1])
-                if cel2 == krol_lokalizacja and 0 <= cel2[0] <= 7 and 0 <= cel2[1] <= 7:
+                if cel2 == pozycja_krola and 0 <= cel2[0] <= 7 and 0 <= cel2[1] <= 7:
                     krol_w_zasiegu = True
                     break
             if not krol_w_zasiegu:
@@ -430,32 +426,29 @@ def ruchy_pionek_w_szachu(pozycja, kolor): #jeszcze nie zrobione
     lista_ruchow = []
     if kolor == 'white':
         pozycja_krola = czarne_lokalizacja[czarne_figury.index('king')]
-    else:
-        pozycja_krola = biale_lokalizacja[biale_figury.index('king')]
-    if kolor == 'white':
         if (pozycja[0] + 1, pozycja[1] + 1) == pozycja_krola:
             lista_ruchow.append((pozycja[0], pozycja[1]))
         elif (pozycja[0] - 1, pozycja[1] + 1) == pozycja_krola:
             lista_ruchow.append((pozycja[0], pozycja[1]))
     else:
+        pozycja_krola = biale_lokalizacja[biale_figury.index('king')]
         if (pozycja[0] + 1, pozycja[1] - 1) == pozycja_krola:
             lista_ruchow.append((pozycja[0], pozycja[1]))
         if (pozycja[0] - 1, pozycja[1] - 1) == pozycja_krola:
             lista_ruchow.append((pozycja[0], pozycja[1]))
     return lista_ruchow
 def ruchy_skoczek_w_szachu(pozycja, kolor):
-    lista_ruchow = []
     if kolor == 'white':
         pozycja_krola = czarne_lokalizacja[czarne_figury.index('king')]
     else:
         pozycja_krola = biale_lokalizacja[biale_figury.index('king')]
     # 8 squares to check for knights, they can go two squares in one direction and one in another
     cele = [(1, 2), (1, -2), (2, 1), (2, -1), (-1, 2), (-1, -2), (-2, 1), (-2, -1)]
-    for i in range(8):
-        cel = (pozycja[0] + cele[i][0], pozycja[1] + cele[i][1])
+    for kierunek in cele:
+        cel = (pozycja[0] + kierunek[0], pozycja[1] + kierunek[1])
         if cel == pozycja_krola:
-            lista_ruchow.append((pozycja[0], pozycja[1]))
-    return lista_ruchow
+            return [(pozycja[0], pozycja[1])]
+    return []
 def ruchy_wieza_w_szachu(pozycja, kolor):
     lista_ruchow = []
     temp_lista_ruchow = []
@@ -467,6 +460,7 @@ def ruchy_wieza_w_szachu(pozycja, kolor):
         pozycja_krola = biale_lokalizacja[biale_figury.index('king')]
 
     for i in range(4):  # down, up, right, left
+        temp_lista_ruchow = []
         sciezka = True
         lancuch = 1
         if i == 0:
@@ -486,11 +480,10 @@ def ruchy_wieza_w_szachu(pozycja, kolor):
                     0 <= pozycja[0] + (lancuch * x) <= 7 and 0 <= pozycja[1] + (lancuch * y) <= 7: #granice planszy
                 temp_lista_ruchow.append((pozycja[0] + (lancuch * x), pozycja[1] + (lancuch * y)))
                 if (pozycja[0] + (lancuch * x), pozycja[1] + (lancuch * y)) == pozycja_krola:
-                    sciezka = False
-                    lista_ruchow.append((pozycja[0], pozycja[1]))
+                    temp_lista_ruchow.append((pozycja[0], pozycja[1]))
                     for each in temp_lista_ruchow:
                         lista_ruchow.append(each)
-                    temp_lista_ruchow = []
+                    return lista_ruchow
                 lancuch += 1
             else:
                 sciezka = False
@@ -690,6 +683,21 @@ def sprawdz_wybor_promocji():
 
 
 # main game loop -------------------------------------------------------------------------------------------------------
+biale_figury = ['rook', 'knight', 'bishop', 'king', 'queen', 'bishop', 'knight', 'rook',
+                'pawn']
+biale_lokalizacja = [(0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0), (7, 0),
+                     (4, 1)]
+czarne_figury = ['rook', 'knight', 'bishop', 'king', 'queen', 'bishop', 'knight', 'rook',
+                ]
+czarne_lokalizacja = [(0, 7), (1, 7), (2, 7), (3, 7), (4, 7), (5, 7), (6, 7), (7, 7)
+                      ]
+'''
+                    ^^^^^^ UŁOŻENIE FIGUR POD TESTY ^^^^^^
+                    
+                    
+                    
+'''
+
 czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
 biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
 uruchom = True
