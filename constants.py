@@ -21,7 +21,7 @@ czarne_lokalizacja = [(0, 7), (1, 7), (2, 7), (3, 7), (4, 7), (5, 7), (6, 7), (7
                       (0, 6), (1, 6), (2, 6), (3, 6), (4, 6), (5, 6), (6, 6), (7, 6)]
 biale_zbite_figury = []
 czarne_zbite_figury = []
-# 0 - whites turn no selection: 1-whites turn piece selected: 2- black turn no selection, 3 - black turn piece selected
+# 0 - whites turn no selection: 1 - whites turn piece selected: 2 - black turn no selection, 3 - black turn piece selected
 kolejnosc = 0
 wybor = 100
 dostepne_ruchy = []
