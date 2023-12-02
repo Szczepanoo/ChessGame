@@ -152,7 +152,7 @@ def sprawdz_mozliwe_opcje(figury, lokalizacje, tura):
         elif figura == 'king':
             lista_ruchow = []
 
-        if szachowane_pola: # jeśli nie puste
+        if szachowane_pola and lista_ruchow: # jeśli nie puste
             ostateczna_lista_ruchow = []
             for ruch in lista_ruchow:
                 if ruch in szachowane_pola:
@@ -181,7 +181,7 @@ def sprawdz_mozliwe_ruchy():
 # checking if king is in check
 def sprawdz_szach(biale_opcje, czarne_opcje):
     global szach, biale_szach, czarne_szach
-    szach = False
+    #szach = False
     biale_szach = False
     czarne_szach = False
     biale_krol_index = biale_figury.index('king')
@@ -192,15 +192,17 @@ def sprawdz_szach(biale_opcje, czarne_opcje):
     for sublist in czarne_opcje:
         if biale_krol_lokalizacja in sublist:
             biale_szach = True
-            szach = True
+            #szach = True
             sublist.remove(biale_krol_lokalizacja)
             biale_ruch[biale_krol_index] = True
     for sublist2 in biale_opcje:
         if czarne_krol_lokalizacja in sublist2:
             czarne_szach = True
-            szach = True
+            #szach = True
             sublist2.remove(czarne_krol_lokalizacja)
             czarne_ruch[czarne_krol_index] = True
+    print(f"sprawdz_szach b{biale_szach} c{czarne_szach}")
+
 
 # default pieces valid moves
 def ruchy_krol(pozycja, kolor):
@@ -366,10 +368,8 @@ def ruchy_w_szach(figury, lokalizacje, tura):
     lista_wszystkich_ruchow = []
     if biale_szach:
         pozycja_krola = biale_lokalizacja[biale_figury.index('king')]
-        tura = 'black'
     elif czarne_szach:
         pozycja_krola = czarne_lokalizacja[czarne_figury.index('king')]
-        tura = 'white'
     else:
         return lista_wszystkich_ruchow
 
@@ -403,31 +403,6 @@ def ruchy_w_szach(figury, lokalizacje, tura):
         return temp_wszystkie_ruchy
     return lista_wszystkich_ruchow
 # valid moves while in check
-def ruchy_krol_w_szach(pozycja, kolor, szachowane_pola):
-    lista_ruchow = []
-    if kolor == 'white':
-        lista_przyjaciol = biale_lokalizacja
-        #lista_wrogow = czarne_lokalizacja
-        pozycja_krola = czarne_lokalizacja[czarne_figury.index('king')]
-    else:
-        lista_przyjaciol = czarne_lokalizacja
-        #lista_wrogow = biale_lokalizacja
-        pozycja_krola = biale_lokalizacja[biale_figury.index('king')]
-    # 8 squares to check for kings, they can go one square any direction
-    cele = [(1, 0), (1, 1), (1, -1), (-1, 0), (-1, 1), (-1, -1), (0, 1), (0, -1)]
-    for i in range(8):
-        cel = (pozycja[0] + cele[i][0], pozycja[1] + cele[i][1])
-        krol_w_zasiegu = False
-        if cel not in lista_przyjaciol and 0 <= cel[0] <= 7 and 0 <= cel[1] <= 7:# and (cel not in szachowane_pola or cel in lista_wrogow):
-            #król nie może stać obok króla
-            for i in range(8):
-                cel2 = (cel[0] + cele[i][0], cel[1] + cele[i][1])
-                if cel2 == pozycja_krola and 0 <= cel2[0] <= 7 and 0 <= cel2[1] <= 7:
-                    krol_w_zasiegu = True
-                    break
-            if not krol_w_zasiegu:
-                lista_ruchow.append(cel)
-    return lista_ruchow
 def ruchy_pionek_w_szach(pozycja, kolor): #jeszcze nie zrobione
     lista_ruchow = []
     if kolor == 'white':
@@ -556,6 +531,7 @@ def prognozowanie_szachu(dostepne_ruchy, tura):
         wrogowie_figury = biale_figury
         wrogowie_lokalizacja = biale_lokalizacja
 
+    #print(f"inner1 {tura} {dostepne_ruchy[figury.index('king')]}")
     for i in range(len(figury)): # dla każdej figury
         if dostepne_ruchy[i]: # jeżeli nie poste
             temp = wspolrzedne[i] # temp = oryginalna lokalizacja figury
@@ -571,10 +547,10 @@ def prognozowanie_szachu(dostepne_ruchy, tura):
                     tymczasowe_wszystkie_ruchy[i].append(dostepne_ruchy[i][j])
             wspolrzedne[i] = temp
     return tymczasowe_wszystkie_ruchy
-
 def czy_wystepuje_szach(figury, wspolrzedne, tura, wrogowie_figury, wrogowie_lokalizacja): #figury danego koloru, zmienione wspolrzedne koloru, kolor
     lista_ruchow = []
     prognozowane_ruchy = []
+    pozycja_krola = wspolrzedne[figury.index('king')]
     if tura == 'white':
         tura = 'black'
     else: #tura == 'black'
@@ -603,10 +579,10 @@ def czy_wystepuje_szach(figury, wspolrzedne, tura, wrogowie_figury, wrogowie_lok
             lista_ruchow = []
         prognozowane_ruchy.append(lista_ruchow)
 
-    if tura == 'white':
+    '''if tura == 'white':
         pozycja_krola = czarne_lokalizacja[czarne_figury.index('king')]
     else:
-        pozycja_krola = biale_lokalizacja[biale_figury.index('king')]
+        pozycja_krola = biale_lokalizacja[biale_figury.index('king')]'''
 
     for sublist in prognozowane_ruchy:
         if pozycja_krola in sublist:
@@ -952,13 +928,16 @@ while uruchom:
                         czarne_lokalizacja.pop(czarne_figura)
                         czarne_ruch.pop(czarne_figura)
                     ''' kolejnosc do zmiany-----------------------------------------------------------------------'''
+                    print(f"1 {biale_opcje[biale_figury.index('king')]}")
                     biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
                     czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
                     sprawdz_szach(biale_opcje, czarne_opcje)
-                    if biale_szach:
-                        biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
-                    elif czarne_szach:
+                    print(f"2 {biale_opcje[biale_figury.index('king')]}")
+                    if czarne_szach:
                         czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
+                    elif biale_szach:
+                        biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
+                        print(f"3 {biale_opcje[biale_figury.index('king')]}")
                     kolejnosc = 2
                     wybor = 100
                     dostepne_ruchy = []
@@ -986,6 +965,10 @@ while uruchom:
                             wybor = 100
                             dostepne_ruchy = []"""
             if kolejnosc > 1:
+                if czarne_szach:
+                    czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
+                elif biale_szach:
+                    biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
                 if klikniecie_wspolrzedna == (8, 8) or klikniecie_wspolrzedna == (9, 8):
                     zwyciezca = 'white'
                 if klikniecie_wspolrzedna in czarne_lokalizacja:
@@ -1013,13 +996,17 @@ while uruchom:
                         biale_lokalizacja.pop(biale_figura)
                         biale_ruch.pop(biale_figura)
                     ''' kolejnosc do zmiany-----------------------------------------------------------------------'''
+                    print(f"4 {biale_opcje[biale_figury.index('king')]}")
                     biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
                     czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
+                    print(f"5 {biale_opcje[biale_figury.index('king')]}")
                     sprawdz_szach(biale_opcje, czarne_opcje)
-                    if biale_szach:
-                        biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
-                    elif czarne_szach:
+                    if czarne_szach:
                         czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
+                    elif biale_szach:
+                        biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
+                        print(f"6 {biale_opcje[biale_figury.index('king')]}")
+
                     kolejnosc = 0
                     wybor = 100
                     dostepne_ruchy = []
