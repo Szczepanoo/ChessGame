@@ -563,7 +563,6 @@ def prognozowanie_szachu(dostepne_ruchy, tura):
                 wspolrzedne[i] = dostepne_ruchy[i][j] # przenieś figurę do możliwego ruchu
                 temp_figury = wrogowie_figury.copy() # temp_figury = tymczasowe figury przeciwnika
                 temp_lokalizacja = wrogowie_lokalizacja.copy() # temp_lokalizacja = tymczasowe lokalizacje przeciwnika
-                print(temp_lokalizacja)
                 if wspolrzedne[i] in temp_lokalizacja: # jeżeli ruch zbija figurę
                     temp_figury.pop(temp_lokalizacja.index(wspolrzedne[i]))
                     temp_lokalizacja.pop(temp_lokalizacja.index(wspolrzedne[i])) # tymczasowo usuń zbitą figurę
@@ -571,17 +570,6 @@ def prognozowanie_szachu(dostepne_ruchy, tura):
                 if not czy_szach:
                     tymczasowe_wszystkie_ruchy[i].append(dostepne_ruchy[i][j])
             wspolrzedne[i] = temp
-    '''temp_figury = wrogowie_figury
-    temp_lokalizacja = wrogowie_lokalizacja
-    for i in range(len(figury)): # dla każdej figury
-        if dostepne_ruchy[i]: # jeżeli nie poste
-            temp = wspolrzedne[i] # temp = oryginalna lokalizacja figury
-            for j in range(len(dostepne_ruchy[i])): # dla każdego możliwego ruchu
-                wspolrzedne[i] = dostepne_ruchy[i][j] # przenieś figurę do możliwego ruchu
-                czy_szach = czy_wystepuje_szach(figury, wspolrzedne, tura, temp_figury, temp_lokalizacja) # czy po wykonaniu ruchu wystąpił by szach
-                if not czy_szach:
-                    tymczasowe_wszystkie_ruchy[i].append(dostepne_ruchy[i][j])
-            wspolrzedne[i] = temp'''
     return tymczasowe_wszystkie_ruchy
 
 def czy_wystepuje_szach(figury, wspolrzedne, tura, wrogowie_figury, wrogowie_lokalizacja): #figury danego koloru, zmienione wspolrzedne koloru, kolor
@@ -679,42 +667,40 @@ def prognoza_roszada(kolor, wspolrzedne, wrogowie_lokalizacja):
                 if roszada:
                     ruchy_roszady.append((puste_pola[1], puste_pola[0]))
     return ruchy_roszady
-def prognoza_pionek(pozycja, kolor, wspolrzedne, wrogowie_lokalizacja):
+def prognoza_pionek(pozycjaA, kolor, przyjaciele, wrogowie):
     lista_ruchow = []
     if kolor == 'white':
-        if (pozycja[0] + 1, pozycja[1] + 1) in wspolrzedne:
-            lista_ruchow.append((pozycja[0] + 1, pozycja[1] + 1))
-        if (pozycja[0] - 1, pozycja[1] + 1) in wspolrzedne:
-            lista_ruchow.append((pozycja[0] - 1, pozycja[1] + 1))
+        if (pozycjaA[0] + 1, pozycjaA[1] + 1) in przyjaciele:
+            lista_ruchow.append((pozycjaA[0] + 1, pozycjaA[1] + 1))
+        if (pozycjaA[0] - 1, pozycjaA[1] + 1) in przyjaciele:
+            lista_ruchow.append((pozycjaA[0] - 1, pozycjaA[1] + 1))
     else:
-        if (pozycja[0] + 1, pozycja[1] - 1) in wrogowie_lokalizacja:
-            lista_ruchow.append((pozycja[0] + 1, pozycja[1] - 1))
-        if (pozycja[0] - 1, pozycja[1] - 1) in wrogowie_lokalizacja:
-            lista_ruchow.append((pozycja[0] - 1, pozycja[1] - 1))
+        if (pozycjaA[0] + 1, pozycjaA[1] - 1) in wrogowie:
+            lista_ruchow.append((pozycjaA[0] + 1, pozycjaA[1] - 1))
+        if (pozycjaA[0] - 1, pozycjaA[1] - 1) in wrogowie:
+            lista_ruchow.append((pozycjaA[0] - 1, pozycjaA[1] - 1))
     return lista_ruchow
-def prognoza_skoczek(pozycja, kolor, wspolrzedne, wrogowie_lokalizacja):
+def prognoza_skoczek(pozycjaA, kolor, przyjaciele, wrogowie):
     lista_ruchow = []
     if kolor == 'white':
-        lista_wrogow = wspolrzedne
-        lista_przyjaciol = wrogowie_lokalizacja
+        lista_przyjaciol = wrogowie
     else:
-        lista_przyjaciol = wspolrzedne
-        lista_wrogow = wrogowie_lokalizacja
+        lista_przyjaciol = przyjaciele
     # 8 squares to check for knights, they can go two squares in one direction and one in another
     cele = [(1, 2), (1, -2), (2, 1), (2, -1), (-1, 2), (-1, -2), (-2, 1), (-2, -1)]
     for i in range(8):
-        cel = (pozycja[0] + cele[i][0], pozycja[1] + cele[i][1])
+        cel = (pozycjaA[0] + cele[i][0], pozycjaA[1] + cele[i][1])
         if cel not in lista_przyjaciol and 0 <= cel[0] <= 7 and 0 <= cel[1] <= 7:
             lista_ruchow.append(cel)
     return lista_ruchow
-def prognoza_wieza(pozycja, kolor, wspolrzedne, wrogowie_lokalizacja):
+def prognoza_wieza(pozycja, kolor, przyjaciele, wrogowie):
     lista_ruchow = []
     if kolor == 'white':
-        lista_wrogow = wspolrzedne
-        lista_przyjaciol = wrogowie_lokalizacja
+        lista_wrogow = przyjaciele
+        lista_przyjaciol = wrogowie
     else:
-        lista_przyjaciol = wspolrzedne
-        lista_wrogow = wrogowie_lokalizacja
+        lista_przyjaciol = przyjaciele
+        lista_wrogow = wrogowie
     for i in range(4):  # down, up, right, left
         sciezka = True
         lancuch = 1
@@ -740,14 +726,14 @@ def prognoza_wieza(pozycja, kolor, wspolrzedne, wrogowie_lokalizacja):
             else:
                 sciezka = False
     return lista_ruchow
-def prognoza_goniec(pozycja, kolor, wspolrzedne, wrogowie_lokalizacja):
+def prognoza_goniec(pozycja, kolor, przyjaciele, wrogowie):
     lista_ruchow = []
     if kolor == 'white':
-        lista_wrogow = wspolrzedne
-        lista_przyjaciol = wrogowie_lokalizacja
+        lista_wrogow = przyjaciele
+        lista_przyjaciol = wrogowie
     else:
-        lista_przyjaciol = wspolrzedne
-        lista_wrogow = wrogowie_lokalizacja
+        lista_przyjaciol = przyjaciele
+        lista_wrogow = wrogowie
     for i in range(4):  # up-right, up-left, down-right, down-left
         sciezka = True
         lancuch = 1
@@ -773,9 +759,9 @@ def prognoza_goniec(pozycja, kolor, wspolrzedne, wrogowie_lokalizacja):
             else:
                 sciezka = False
     return lista_ruchow
-def prognoza_hetman(pozycja, kolor, wspolrzedne, wrogowie_lokalizacja):
-    lista_ruchow = prognoza_goniec(pozycja, kolor, wspolrzedne, wrogowie_lokalizacja)
-    druga_lista = prognoza_wieza(pozycja, kolor, wspolrzedne, wrogowie_lokalizacja)
+def prognoza_hetman(pozycja, kolor, przyjaciele, wrogowie):
+    lista_ruchow = prognoza_goniec(pozycja, kolor, przyjaciele, wrogowie)
+    druga_lista = prognoza_wieza(pozycja, kolor, przyjaciele, wrogowie)
     for i in range(len(druga_lista)):
         lista_ruchow.append(druga_lista[i])
     return lista_ruchow
@@ -904,8 +890,8 @@ czarne_lokalizacja = [(0, 7), (1, 7), (2, 7), (3, 7), (4, 7), (5, 7), (6, 7), (7
                     
 '''
 
-czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
 biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
+czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
 uruchom = True
 koniec_gry = False
 while uruchom:
@@ -966,8 +952,8 @@ while uruchom:
                         czarne_lokalizacja.pop(czarne_figura)
                         czarne_ruch.pop(czarne_figura)
                     ''' kolejnosc do zmiany-----------------------------------------------------------------------'''
-                    czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
                     biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
+                    czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
                     sprawdz_szach(biale_opcje, czarne_opcje)
                     if biale_szach:
                         biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
@@ -977,7 +963,7 @@ while uruchom:
                     wybor = 100
                     dostepne_ruchy = []
                 # add option to castle
-                elif wybor != 100 and wybrany_element == 'king':
+                """elif wybor != 100 and wybrany_element == 'king':
                     for q in range(len(ruchy_roszada)):
                         if klikniecie_wspolrzedna == ruchy_roszada[q][0]:
                             biale_lokalizacja[wybor] = klikniecie_wspolrzedna
@@ -998,13 +984,13 @@ while uruchom:
                                 czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
                             kolejnosc = 2
                             wybor = 100
-                            dostepne_ruchy = []
+                            dostepne_ruchy = []"""
             if kolejnosc > 1:
                 if klikniecie_wspolrzedna == (8, 8) or klikniecie_wspolrzedna == (9, 8):
                     zwyciezca = 'white'
                 if klikniecie_wspolrzedna in czarne_lokalizacja:
                     wybor = czarne_lokalizacja.index(klikniecie_wspolrzedna)
-                    # check what piece is selected, so you can only draw castling ruchy if king is selected
+                    # check what piece is selected, so you can only draw castling moves if king is selected
                     wybrany_element = czarne_figury[wybor]
                     if kolejnosc == 2:
                         kolejnosc = 3
@@ -1027,8 +1013,8 @@ while uruchom:
                         biale_lokalizacja.pop(biale_figura)
                         biale_ruch.pop(biale_figura)
                     ''' kolejnosc do zmiany-----------------------------------------------------------------------'''
-                    czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
                     biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
+                    czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
                     sprawdz_szach(biale_opcje, czarne_opcje)
                     if biale_szach:
                         biale_opcje = sprawdz_mozliwe_opcje(biale_figury, biale_lokalizacja, 'white')
@@ -1038,7 +1024,7 @@ while uruchom:
                     wybor = 100
                     dostepne_ruchy = []
                 # add option to castle
-                elif wybor != 100 and wybrany_element == 'king':
+                """elif wybor != 100 and wybrany_element == 'king':
                     for q in range(len(ruchy_roszada)):
                         if klikniecie_wspolrzedna == ruchy_roszada[q][0]:
                             czarne_lokalizacja[wybor] = klikniecie_wspolrzedna
@@ -1059,7 +1045,11 @@ while uruchom:
                                 czarne_opcje = sprawdz_mozliwe_opcje(czarne_figury, czarne_lokalizacja, 'black')
                             kolejnosc = 0
                             wybor = 100
-                            dostepne_ruchy = []
+                            dostepne_ruchy = []"""
+
+
+
+
         if event.type == pygame.KEYDOWN and koniec_gry:
             if event.key == pygame.K_RETURN:
                 koniec_gry = False
