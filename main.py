@@ -861,14 +861,14 @@ def sprawdz_wybor_promocji():
 
 
 # main game loop -------------------------------------------------------------------------------------------------------
-biale_figury = ['rook', 'knight', 'bishop', 'king', 'queen', 'bishop', 'knight', 'rook',
+"""biale_figury = ['rook', 'knight', 'bishop', 'king', 'queen', 'bishop', 'knight', 'rook',
                 'pawn']
 biale_lokalizacja = [(0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (6, 0), (7, 0),
                      (4, 1)]
 czarne_figury = ['rook', 'knight', 'bishop', 'king', 'queen', 'bishop', 'knight', 'rook',
                  'pawn']
 czarne_lokalizacja = [(0, 7), (1, 7), (2, 7), (3, 7), (4, 7), (5, 7), (6, 7), (7, 7),
-                      (5, 6)]
+                      (5, 6)]"""
 # na sprawdzenie mat i pat
 '''biale_figury = ['king']
 biale_lokalizacja = [(0, 0)]
