@@ -87,4 +87,5 @@ index_promocja = 100
 szach = False
 biale_szach = False
 czarne_szach = False
-ruchy_roszada = []
+biale_ruchy_roszada = []
+czarne_ruchy_roszada = []

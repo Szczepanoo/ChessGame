@@ -74,17 +74,21 @@ def pokaz_koniec_gry():
         ekran.blit(czcionka.render(f'{kolor} wygrywają! ', True, 'white'), (210, 210))
         ekran.blit(czcionka.render(f'Naciśnij ENTER aby zacząć od nowa!', True, 'white'), (210, 240))
 #wyswietla dostepne ruchy roszady
-def pokaz_roszada(ruchy):
+def pokaz_roszada():
     if kolejnosc < 2:
+        print("dupa")
         kolor = 'red'
+        ruchy = biale_ruchy_roszada
+        print(biale_ruchy_roszada)
+        print(ruchy)
     else:
         kolor = 'blue'
+        ruchy = czarne_ruchy_roszada
     for i in range(len(ruchy)):
         pygame.draw.circle(ekran, kolor, (ruchy[i][0][0] * 100 + 50, ruchy[i][0][1] * 100 + 70), 8)
         ekran.blit(czcionka.render('Król', True, 'black'), (ruchy[i][0][0] * 100 + 30, ruchy[i][0][1] * 100 + 70))
         pygame.draw.circle(ekran, kolor, (ruchy[i][1][0] * 100 + 50, ruchy[i][1][1] * 100 + 70), 8)
-        ekran.blit(czcionka.render('Wieża', True, 'black'),
-                   (ruchy[i][1][0] * 100 + 30, ruchy[i][1][1] * 100 + 70))
+        ekran.blit(czcionka.render('Wieża', True, 'black'), (ruchy[i][1][0] * 100 + 30, ruchy[i][1][1] * 100 + 70))
         pygame.draw.line(ekran, kolor, (ruchy[i][0][0] * 100 + 50, ruchy[i][0][1] * 100 + 70),
                          (ruchy[i][1][0] * 100 + 50, ruchy[i][1][1] * 100 + 70), 2)
 # okno z figurami do promocji
@@ -160,13 +164,14 @@ def okresl_nastepne_ruchy():
 
 # function to check all pieces valid options on board
 def sprawdz_mozliwe_opcje(figury, lokalizacje, tura):
-    global ruchy_roszada
+    global biale_ruchy_roszada, czarne_ruchy_roszada
     lista_ruchow = []
     lista_wszystkich_ruchow = []
-    ruchy_roszada = []
     if tura == 'white':
+        biale_ruchy_roszada = []
         szachowane_pola = ruchy_w_szach(czarne_figury, czarne_lokalizacja, 'black')  # pozycja figur oraz ścieżke do króla
     else:
+        czarne_ruchy_roszada = []
         szachowane_pola = ruchy_w_szach(biale_figury, biale_lokalizacja, 'white')  # pozycja figur oraz ścieżke do króla
     for i in range((len(figury))):
         lokalizacja = lokalizacje[i]
@@ -195,13 +200,13 @@ def sprawdz_mozliwe_opcje(figury, lokalizacje, tura):
 
     figura_index = figury.index('king')
     lokalizacja = lokalizacje[figura_index]
-    lista_ruchow, ruchy_roszada = ruchy_krol(lokalizacja, tura)
-    if tura == 'white': # jedynie do testow
-        print(f"ruchy roszady {ruchy_roszada}")
+    if tura == 'white':
+        lista_ruchow, biale_ruchy_roszada = ruchy_krol(lokalizacja, tura)
+    else:
+        lista_ruchow, czarne_ruchy_roszada = ruchy_krol(lokalizacja, tura)
     lista_wszystkich_ruchow[figura_index] = lista_ruchow
 
     return prognozowanie_szachu(lista_wszystkich_ruchow, tura)
-    #return lista_wszystkich_ruchow
 # check for valid moves for just selected piece
 def sprawdz_mozliwe_ruchy():
     if kolejnosc < 2:
@@ -552,17 +557,20 @@ def ruchy_hetman_w_szach(pozycja, kolor):
 '''
 # blokowanie figur, których ruch prowadzi do szachu
 def prognozowanie_szachu(dostepne_ruchy, tura):
+    global biale_ruchy_roszada, czarne_ruchy_roszada
     tymczasowe_wszystkie_ruchy = [[] for _ in range(len(dostepne_ruchy))]
     if tura == 'white':
         figury = biale_figury
         wspolrzedne = biale_lokalizacja  # współrzędne wszystkich białych figur
         wrogowie_figury = czarne_figury
         wrogowie_lokalizacja = czarne_lokalizacja
+        ruchy_roszada_w_szach = biale_ruchy_roszada
     else:
         figury = czarne_figury
         wspolrzedne = czarne_lokalizacja # współrzędne wszystkich czarnych figur
         wrogowie_figury = biale_figury
         wrogowie_lokalizacja = biale_lokalizacja
+        ruchy_roszada_w_szach = czarne_ruchy_roszada
 
     for i in range(len(figury)): # dla każdej figury
         if dostepne_ruchy[i]: # jeżeli nie poste
@@ -578,6 +586,27 @@ def prognozowanie_szachu(dostepne_ruchy, tura):
                 if not czy_szach:
                     tymczasowe_wszystkie_ruchy[i].append(dostepne_ruchy[i][j])
             wspolrzedne[i] = temp
+
+    print(f"1 {tura} {ruchy_roszada_w_szach}")
+    # CZY PO ROSZADZIE KRÓL NIE BĘDZIE W SZACHU
+    if ruchy_roszada_w_szach:
+        for sublist in ruchy_roszada_w_szach:
+            temp = wspolrzedne[figury.index('king')]
+            wspolrzedne[figury.index('king')] = sublist[0]
+            temp_figury = wrogowie_figury.copy()  # temp_figury = tymczasowe figury przeciwnika
+            temp_lokalizacja = wrogowie_lokalizacja.copy()  # temp_lokalizacja = tymczasowe lokalizacje przeciwnika
+            if sublist[0] in temp_lokalizacja:  # jeżeli ruch zbija figurę
+                temp_figury.pop(temp_lokalizacja.index(wspolrzedne[figury.index('king')]))
+                temp_lokalizacja.pop(temp_lokalizacja.index(wspolrzedne[figury.index('king')]))  # tymczasowo usuń zbitą figurę
+            czy_szach = czy_wystepuje_szach(figury, wspolrzedne, tura, temp_figury, temp_lokalizacja)  # czy po wykonaniu ruchu wystąpił by szach
+            if czy_szach:
+                ruchy_roszada_w_szach.pop(ruchy_roszada_w_szach.index(sublist))
+            wspolrzedne[figury.index('king')] = temp
+    print(f"2 {tura} {ruchy_roszada_w_szach}")
+    '''if tura == 'white':
+        biale_ruchy_roszada = ruchy_roszada_w_szach.copy()
+    else:
+        czarne_ruchy_roszada = ruchy_roszada_w_szach.copy()'''
     return tymczasowe_wszystkie_ruchy
 def czy_wystepuje_szach(figury, wspolrzedne, tura, wrogowie_figury, wrogowie_lokalizacja):
     lista_ruchow = []
@@ -906,7 +935,7 @@ while uruchom:
         dostepne_ruchy = sprawdz_mozliwe_ruchy()
         pokaz_mozliwe_ruchy(dostepne_ruchy)
         if wybrany_element == 'king':
-            pokaz_roszada(ruchy_roszada)
+            pokaz_roszada()
     # event handling
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -947,8 +976,8 @@ while uruchom:
                     dostepne_ruchy = []
                 # add option to castle
                 elif wybor != 100 and wybrany_element == 'king':
-                    for q in range(len(ruchy_roszada)):
-                        if klikniecie_wspolrzedna == ruchy_roszada[q][0]:
+                    for q in range(len(biale_ruchy_roszada)):
+                        if klikniecie_wspolrzedna == biale_ruchy_roszada[q][0]:
                             biale_lokalizacja[wybor] = klikniecie_wspolrzedna
                             biale_ruch[wybor] = True
                             if klikniecie_wspolrzedna == (1, 0):
@@ -956,7 +985,7 @@ while uruchom:
                             else:
                                 wieza_wspolrzedne = (7, 0)
                             wieza_index = biale_lokalizacja.index(wieza_wspolrzedne)
-                            biale_lokalizacja[wieza_index] = ruchy_roszada[q][1]
+                            biale_lokalizacja[wieza_index] = biale_ruchy_roszada[q][1]
                             okresl_nastepne_ruchy() # biale_opcje, czarne_opcje, czy szach
                             kolejnosc = 2
                             wybor = 100
@@ -996,8 +1025,8 @@ while uruchom:
                     dostepne_ruchy = []
                 # add option to castle
                 elif wybor != 100 and wybrany_element == 'king':
-                    for q in range(len(ruchy_roszada)):
-                        if klikniecie_wspolrzedna == ruchy_roszada[q][0]:
+                    for q in range(len(czarne_ruchy_roszada)):
+                        if klikniecie_wspolrzedna == czarne_ruchy_roszada[q][0]:
                             czarne_lokalizacja[wybor] = klikniecie_wspolrzedna
                             czarne_ruch[wybor] = True
                             if klikniecie_wspolrzedna == (1, 7):
@@ -1005,7 +1034,7 @@ while uruchom:
                             else:
                                 wieza_wspolrzedne = (7, 7)
                             wieza_index = czarne_lokalizacja.index(wieza_wspolrzedne)
-                            czarne_lokalizacja[wieza_index] = ruchy_roszada[q][1]
+                            czarne_lokalizacja[wieza_index] = czarne_ruchy_roszada[q][1]
                             okresl_nastepne_ruchy() # biale_opcje, czarne_opcje, czy szach
                             kolejnosc = 0
                             wybor = 100
