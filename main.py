@@ -597,7 +597,7 @@ def czy_wystepuje_szach(figury, wspolrzedne, tura, wrogowie_figury, wrogowie_lok
             # kolor - czarne dla wejsciowa tura = 'white'
             # wrogowie_lokalizacja - czarne_lokalizacje dla wejsciowa tura = 'white'
             # wspolrzedne - zmienione biale_lokalizacja dla wejsciowa tura = 'black'
-            lista_ruchow = prognoza_pionek(pozycja_wroga, kolor, wrogowie_lokalizacja)
+            lista_ruchow = prognoza_pionek(pozycja_wroga, kolor, wspolrzedne)
         elif figura_wroga == 'rook':
             lista_ruchow = prognoza_wieza(pozycja_wroga, wrogowie_lokalizacja, wspolrzedne)
         elif figura_wroga == 'knight':
@@ -669,17 +669,17 @@ def prognoza_roszada(kolor, wspolrzedne, wrogowie_lokalizacja):
                 if roszada:
                     ruchy_roszady.append((puste_pola[1], puste_pola[0]))
     return ruchy_roszady
-def prognoza_pionek(pozycjaA, kolor, przyjaciele):
+def prognoza_pionek(pozycjaA, kolor, wrogowie):
     lista_ruchow = []
     if kolor == 'white':
-        if (pozycjaA[0] + 1, pozycjaA[1] + 1) in przyjaciele:
+        if (pozycjaA[0] + 1, pozycjaA[1] + 1) in wrogowie:
             lista_ruchow.append((pozycjaA[0] + 1, pozycjaA[1] + 1))
-        if (pozycjaA[0] - 1, pozycjaA[1] + 1) in przyjaciele:
+        if (pozycjaA[0] - 1, pozycjaA[1] + 1) in wrogowie:
             lista_ruchow.append((pozycjaA[0] - 1, pozycjaA[1] + 1))
     else:
-        if (pozycjaA[0] + 1, pozycjaA[1] - 1) in przyjaciele:
+        if (pozycjaA[0] + 1, pozycjaA[1] - 1) in wrogowie:
             lista_ruchow.append((pozycjaA[0] + 1, pozycjaA[1] - 1))
-        if (pozycjaA[0] - 1, pozycjaA[1] - 1) in przyjaciele:
+        if (pozycjaA[0] - 1, pozycjaA[1] - 1) in wrogowie:
             lista_ruchow.append((pozycjaA[0] - 1, pozycjaA[1] - 1))
     return lista_ruchow
 def prognoza_skoczek(pozycjaA, przyjaciele):
