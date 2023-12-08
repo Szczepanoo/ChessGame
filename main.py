@@ -76,11 +76,8 @@ def pokaz_koniec_gry():
 #wyswietla dostepne ruchy roszady
 def pokaz_roszada():
     if kolejnosc < 2:
-        print("dupa")
         kolor = 'red'
         ruchy = biale_ruchy_roszada
-        print(biale_ruchy_roszada)
-        print(ruchy)
     else:
         kolor = 'blue'
         ruchy = czarne_ruchy_roszada
@@ -587,7 +584,6 @@ def prognozowanie_szachu(dostepne_ruchy, tura):
                     tymczasowe_wszystkie_ruchy[i].append(dostepne_ruchy[i][j])
             wspolrzedne[i] = temp
 
-    print(f"1 {tura} {ruchy_roszada_w_szach}")
     # CZY PO ROSZADZIE KRÓL NIE BĘDZIE W SZACHU
     if ruchy_roszada_w_szach:
         for sublist in ruchy_roszada_w_szach:
@@ -602,11 +598,6 @@ def prognozowanie_szachu(dostepne_ruchy, tura):
             if czy_szach:
                 ruchy_roszada_w_szach.pop(ruchy_roszada_w_szach.index(sublist))
             wspolrzedne[figury.index('king')] = temp
-    print(f"2 {tura} {ruchy_roszada_w_szach}")
-    '''if tura == 'white':
-        biale_ruchy_roszada = ruchy_roszada_w_szach.copy()
-    else:
-        czarne_ruchy_roszada = ruchy_roszada_w_szach.copy()'''
     return tymczasowe_wszystkie_ruchy
 def czy_wystepuje_szach(figury, wspolrzedne, tura, wrogowie_figury, wrogowie_lokalizacja):
     lista_ruchow = []
