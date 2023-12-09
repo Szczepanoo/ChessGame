@@ -84,7 +84,6 @@ czarne_w_przelocie = (100, 100)
 biale_promuj = False
 czarne_promuj = False
 index_promocja = 100
-szach = False
 biale_szach = False
 czarne_szach = False
 biale_ruchy_roszada = []
