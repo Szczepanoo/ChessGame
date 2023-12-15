@@ -12,6 +12,8 @@
       <change beforePath="$PROJECT_DIR$/constance.py" beforeDir="false" afterPath="$PROJECT_DIR$/constants.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dictionary.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionary.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+    <list default="true" id="a076443a-700e-4981-8cf5-b68bc77ed94b" name="Changes" comment="Przetłumaczono bicie w przelocie">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,7 +23,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="sylwia" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
   </component>
@@ -46,10 +48,21 @@
       <option name="project" value="LOCAL" />
       <updated>1699006060346</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Przetłumaczono bicie w przelocie">
+      <option name="closed" value="true" />
+      <created>1699010265255</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1699010265255</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
+    <MESSAGE value="Merge" />
+    <MESSAGE value="Przetłumaczono bicie w przelocie" />
+    <option name="LAST_COMMIT_MESSAGE" value="Przetłumaczono bicie w przelocie" />
     <MESSAGE value="Przetłumaczenie additions.py i stworzenie pliku z tłumaczeniami. Dostępne również w Google Spreadsheet (https://docs.google.com/spreadsheets/d/1sK6hazsvYZ2WzdV1yEz_5Y2Vf2UscvGW6PS-jTFr9uI/edit?usp=sharing)" />
     <MESSAGE value="Ujednolicenie nazw plików" />
     <option name="LAST_COMMIT_MESSAGE" value="Ujednolicenie nazw plików" />
